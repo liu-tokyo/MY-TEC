@@ -128,3 +128,9 @@ server.on('request', function(request, response) {
 ```
 
 为了对实际的请求提供服务，在 server 对象上需要调用 listen 方法。绝大多数情况你需要传入 listen 你想要服务监听的端口号，这里也存在很多其他的可选方案，参见 API reference。
+
+
+
+## 相关资源
+
+- [Node.js 教程 | 菜鸟教程 (runoob.com)](https://www.runoob.com/nodejs/nodejs-tutorial.html)

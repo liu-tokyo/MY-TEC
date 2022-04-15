@@ -71,7 +71,9 @@ TriggeredBy: ● docker.socket
 
 安装 Docker 不仅提供了 Docker 服务（守护进程），还提供了 docker 命令行实用程序或 Docker 客户端。 在本教程的后面，我们将看到如何使用 docker 命令。
 
-## 在没有 Sudo 的情况下运行 Docker 命令（可选）
+## 修改 Docker 权限
+
+在没有 Sudo 的情况下运行 Docker 命令（可选）
 
 默认情况下，docker 命令只能由 root 用户或在 Docker 安装过程中自动创建的 docker 组中的用户运行。 如果您尝试在没有 sudo 前缀或不属于 docker 组的情况下运行 docker 命令，您将看到类似于以下内容的输出：
 
@@ -381,7 +383,9 @@ docker rm youthful_curie
 
 容器可以转换为可用于构建新容器的镜像。 让我们看看它是如何工作的。
 
-## 将容器中的更改应用到 Docker 映像
+## 应用 Docker 映像
+
+**将容器中的更改应用到 Docker 映像**
 
 启动 Docker 映像时，您可以像在 VM（虚拟机）中一样创建、修改和删除文件。 您所做的更改仅适用于该容器。 您可以启动和停止它，但如果您使用 docker rm 命令丢弃它，您的更改将永远丢失。
 
@@ -426,7 +430,9 @@ sammy/ubuntu-nodejs   latest              7c1f35226ca6        7 seconds ago     
 
 然后与其他人共享新图像，以便您可以从中创建容器。
 
-## 将 Docker 镜像推送到 Docker 存储库
+## 推送 Docker 镜像
+
+**将 Docker 镜像推送到 Docker 存储库**
 
 从现有镜像创建新镜像后，下一个合乎逻辑的步骤是与您有限的朋友、Docker Hub 世界或您可以访问的任何其他 Docker 注册表共享它。 您需要一个帐户才能将映像推送到 Docker Hub 或任何其他 Docker 注册表。
 

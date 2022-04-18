@@ -8,17 +8,17 @@
 本教程在 Ubuntu 20.04 上安装和使用 Docker 社区版 (CE)。 安装 Docker 本身，使用容器和图像，并将图像推送到 Docker 存储库。
 
 ## 要求
-要运行本教程，您需要以下内容：
+要运行本教程，您需要具备以下内容：
 
-Ubuntu 20.04 1 Ubuntu 20.04 服务器，sudo 非 root 用户，根据 [Ubuntu 20.04 初始服务器设置指南](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04)设置防火墙。
+- Ubuntu 20.04 服务器，sudo 非 root 用户，根据 [Ubuntu 20.04 初始服务器设置指南](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04)设置防火墙。
 
-如果您想创建自己的镜像并将其推送到 Docker Hub，如步骤 7 和 8 所示，您有一个 Docker Hub 帐户。
+- 如果您想创建自己的镜像并将其推送到 Docker Hub，如 `应用 Docker 映像` 和 `推送 Docker 镜像` 所示，您需要有一个 Docker Hub 帐户。
 
 ## 安装 Docker
 
 官方 Ubuntu 存储库中提供的 Docker 安装包可能不是最新版本。 从官方 Docker 存储库安装 Docker 以确保您获得最新版本。 为此，请添加新的包源，从 Docker 添加 GPG 密钥以确保下载有效，然后安装包。
 
-
+> 经确认，至少在当前（2022年4月），还是需要添加 Docker 存储库的
 
 ```shell
 ## 首先，更新现有包的列表
@@ -312,7 +312,7 @@ v10.19.0
 
 要退出容器，请在提示符处键入 exit。
 
-## Docker 容器管理
+## 管理Docker 容器
 
 Dockerをしばらく使用すると、コンピュータ上に多くのアクティブ（実行中）および非アクティブのコンテナができます。**アクティブなコンテナ**を表示するには、次を使用します。
 
@@ -502,4 +502,17 @@ unauthorized: authentication required
 现在您可以使用 docker pull sammy / ubuntu-nodejs 将映像带到您的新机器并运行新容器。
 
 ## 概括
-在本教程中，您安装了 Docker，使用图像和容器，并将修改后的图像推送到 Docker Hub。 了解基础知识后，请查看 DigitalOcean 社区中的其他 Docker 教程。
+在本教程中，您安装了 **Docker**，使用图像和容器，并将修改后的图像推送到 **Docker Hub**。 了解基础知识后，请查看 **DigitalOcean** 社区中的其他 **Docker** 教程。
+
+## 补充
+
+- **attach** 和 **exec** 的区别
+
+    | attach                                  | exec                                                         |
+    | :-------------------------------------- | :----------------------------------------------------------- |
+    | 除非SHELL在容器内运行，否则您无法连接。 | 由于 PID = 1 的进程是在正在运行的容器中执行的，因此 shell 不需要在容器中运行。 |
+    | 如果使用 exit 命令退出，容器将停止。    | 即使您使用 exit 命令退出，容器也不会停止                     |
+
+## 相关资源
+
+- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ja

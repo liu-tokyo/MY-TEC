@@ -2,9 +2,9 @@
 
 ## 简介
 
-Lombok大家都知道，在使用POJO过程中，它给我们带来了很多便利，省下大量写get、set方法、构造器、equal、toString方法的时间。除此之外，通过@Builder注解，lombok还可以方便的时间建造者模式。
+**Lombok**大家都知道，在使用 **POJO** 过程中，它给我们带来了很多便利，省下大量写 **get**、**set** 方法、构造器、**equal**、**toString**方法的时间。除此之外，通过@Builder注解，**lombok**还可以方便的时间建造者模式。
 
-只需要定义一个静态公共的内部类即可。代码示例如下：
+只需要定义一个静态公共的(**public static class**)内部类即可。代码示例如下：
 
 ```java
 public class User {

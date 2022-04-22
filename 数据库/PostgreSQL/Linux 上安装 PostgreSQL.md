@@ -52,10 +52,63 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
 
 
 
+## 设置超级用户密码
 
+
+
+### 修改PostgreSQL数据库默认用户postgres的密码
+
+PostgreSQL数据库创建一个postgres用户作为数据库的管理员，密码随机，所以需要修改密码，方式如下：
+
+1. 登录PostgreSQL
+
+   ```
+   sudo -u postgres psql
+   ```
+
+2. 修改登录PostgreSQL密码
+
+   ```
+   ALTER USER postgres WITH PASSWORD ``'postgres'``;
+   ```
+   **注：**
+
+   - 密码postgres要用引号引起来
+   - 命令最后有分号
+
+3. 退出PostgreSQL客户端
+
+   ```
+   \q
+   ```
+
+### 修改linux系统postgres用户的密码
+
+PostgreSQL会创建一个默认的linux用户postgres，修改该用户密码的方法如下：
+
+1. 删除用户postgres的密码
+
+   ```
+   sudo` `passwd` `-d postgres
+   ```
+
+2. 设置用户postgres的密码
+
+   ```
+   sudo` `-u postgres ``passwd
+   ```
+
+   系统提示输入新的密码
+
+   ```
+   Enter new UNIX password:
+   Retype new UNIX password:
+   passwd : password updated successfully
+   ```
 
 
 
 ## 相关资源
 
 - https://www.runoob.com/postgresql/linux-install-postgresql.html
+

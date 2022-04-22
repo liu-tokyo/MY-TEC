@@ -56,19 +56,19 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
 
 
 
-### 修改PostgreSQL数据库默认用户postgres的密码
+### 修改数据库的 PostgreSQL 用户密码
 
-PostgreSQL数据库创建一个postgres用户作为数据库的管理员，密码随机，所以需要修改密码，方式如下：
+安装的时候，PostgreSQL数据库创建一个postgres用户作为数据库的管理员，密码随机，所以需要修改密码，方式如下：
 
 1. 登录PostgreSQL
 
-   ```
+   ```shell
    sudo -u postgres psql
    ```
 
 2. 修改登录PostgreSQL密码
 
-   ```
+   ```shell
    ALTER USER postgres WITH PASSWORD ``'postgres'``;
    ```
    **注：**
@@ -82,29 +82,86 @@ PostgreSQL数据库创建一个postgres用户作为数据库的管理员，密�
    \q
    ```
 
-### 修改linux系统postgres用户的密码
+### 修改 Linux 系统 PostgreSQL 用户密码
 
 PostgreSQL会创建一个默认的linux用户postgres，修改该用户密码的方法如下：
 
 1. 删除用户postgres的密码
 
-   ```
-   sudo` `passwd` `-d postgres
+   ```shell
+   sudo passwd -d postgres
    ```
 
 2. 设置用户postgres的密码
 
-   ```
-   sudo` `-u postgres ``passwd
+   ```shell
+   sudo -u postgres passwd
    ```
 
    系统提示输入新的密码
 
-   ```
+   ```shell
    Enter new UNIX password:
    Retype new UNIX password:
    passwd : password updated successfully
    ```
+
+
+
+## 设置PostgreSQL允许被远程访问
+
+1. 修改 **postgresql.conf**
+
+   `postgresql.conf`存放位置在`/etc/postgresql/13.x/main`下，这里的`x`取决于你安装PostgreSQL的版本号：
+
+   ```shell
+   cd /etc/postgresql/
+   
+   ## 查找相应的版本号
+   ls -al
+   
+   cd 13.x
+   cd main
+   
+   sudo nano postgresql.conf
+   ```
+
+   
+
+   编辑或添加下面一行，使PostgreSQL可以接受来自任意IP的连接请求。
+
+   ```shell
+   listen_addresses = '*'
+   ```
+
+2. 修改 **pg_hba.conf**
+
+   `pg_hba.conf`，位置与`postgresql.conf`相同，虽然上面配置允许任意地址连接PostgreSQL，但是这在pg中还不够，我们还需在`pg_hba.conf`中配置服务端允许的认证方式。
+
+   ```shell
+   sudo nano pg_hba.conf
+   ```
+
+   
+
+   任意编辑器打开该文件，编辑或添加下面一行。
+
+   ```shell
+   # TYPE  DATABASE  USER  CIDR-ADDRESS  METHOD
+   host  all  all 0.0.0.0/0 md5
+   ```
+
+   默认pg只允许本机通过密码认证登录，修改为上面内容后即可以对任意IP访问进行密码验证。对照上面的注释可以很容易搞明白每列的含义，具体的支持项可以查阅文末参考引用。
+
+3. 重启启动 PostgreSQL 服务
+
+   完成上两项配置后执行`sudo service postgresql restart`重启PostgreSQL服务后，允许外网访问的配置就算生效了。
+   
+   ```shell
+   sudo service postgresql restart
+   ```
+
+上述配置结束后，就可以通过远程进行访问。
 
 
 

@@ -1,5 +1,18 @@
 # Linux 上安装 PostgreSQL
 
+## 目录
+
+- [Linux 上安装 PostgreSQL](#linux-上安装-postgresql)
+  - [目录](#目录)
+  - [Ubuntu 安装 PostgreSQL](#ubuntu-安装-postgresql)
+  - [设置超级用户密码](#设置超级用户密码)
+    - [修改数据库的 PostgreSQL 用户密码](#修改数据库的-postgresql-用户密码)
+    - [修改 Linux 系统 PostgreSQL 用户密码](#修改-linux-系统-postgresql-用户密码)
+  - [设置PostgreSQL允许被远程访问](#设置postgresql允许被远程访问)
+  - [相关资源](#相关资源)
+
+---
+
 打开 PostgreSQL 官网 https://www.postgresql.org/，点击菜单栏上的 **Download** ，可以看到这里包含了很多平台的安装包，包括 Linux、Windows、Mac OS等 。
 
 Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体的平台链接，即可查看安装方法：

@@ -325,7 +325,7 @@ public class FastFailoverDriverManager {
    }
 
    private List<String> getLocalEndpointList() {
-       /*
+        /*
          * As mentioned in the best practices doc, a good idea is to read a local resource file and parse the cluster endpoints. 
          * For illustration purposes, the endpoint list is hardcoded here
          */

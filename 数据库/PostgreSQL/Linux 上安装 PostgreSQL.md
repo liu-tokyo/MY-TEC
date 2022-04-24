@@ -4,11 +4,12 @@
 
 - [Linux 上安装 PostgreSQL](#linux-上安装-postgresql)
   - [目录](#目录)
-  - [Ubuntu 安装 PostgreSQL](#ubuntu-安装-postgresql)
-  - [设置超级用户密码](#设置超级用户密码)
-    - [修改数据库的 PostgreSQL 用户密码](#修改数据库的-postgresql-用户密码)
-    - [修改 Linux 系统 PostgreSQL 用户密码](#修改-linux-系统-postgresql-用户密码)
-  - [设置PostgreSQL允许被远程访问](#设置postgresql允许被远程访问)
+  - [1. Ubuntu 安装 PostgreSQL](#1-ubuntu-安装-postgresql)
+  - [2. 设置超级用户密码](#2-设置超级用户密码)
+    - [2.1 修改数据库的 PostgreSQL 用户密码](#21-修改数据库的-postgresql-用户密码)
+    - [2.2 修改 Linux 系统 PostgreSQL 用户密码](#22-修改-linux-系统-postgresql-用户密码)
+  - [3. 设置PostgreSQL允许被远程访问](#3-设置postgresql允许被远程访问)
+  - [4. 下载数据库开发套件](#4-下载数据库开发套件)
   - [相关资源](#相关资源)
 
 ---
@@ -19,7 +20,7 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
 
 
 
-## Ubuntu 安装 PostgreSQL
+## 1. Ubuntu 安装 PostgreSQL
 
 - Ubuntu 可以使用 apt-get 安装 PostgreSQL：
 
@@ -65,11 +66,11 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
 
 
 
-## 设置超级用户密码
+## 2. 设置超级用户密码
 
 
 
-### 修改数据库的 PostgreSQL 用户密码
+### 2.1 修改数据库的 PostgreSQL 用户密码
 
 安装的时候，PostgreSQL数据库创建一个postgres用户作为数据库的管理员，密码随机，所以需要修改密码，方式如下：
 
@@ -95,7 +96,7 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
    \q
    ```
 
-### 修改 Linux 系统 PostgreSQL 用户密码
+### 2.2 修改 Linux 系统 PostgreSQL 用户密码
 
 PostgreSQL会创建一个默认的linux用户postgres，修改该用户密码的方法如下：
 
@@ -121,7 +122,7 @@ PostgreSQL会创建一个默认的linux用户postgres，修改该用户密码的
 
 
 
-## 设置PostgreSQL允许被远程访问
+## 3. 设置PostgreSQL允许被远程访问
 
 1. 修改 **postgresql.conf**
 
@@ -175,6 +176,13 @@ PostgreSQL会创建一个默认的linux用户postgres，修改该用户密码的
    ```
 
 上述配置结束后，就可以通过远程进行访问。
+
+
+
+## 4. 下载数据库开发套件
+
+- A5M2
+  - https://a5m2.mmatsubara.com/
 
 
 

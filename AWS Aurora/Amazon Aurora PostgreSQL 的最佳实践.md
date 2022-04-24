@@ -271,11 +271,11 @@ public class FastFailoverDriverManager {
        }
 
        /*
-         * RO endpoint has a TTL of 1s, we should honor that here. Setting this aggressively makes sure that when
-         * the PG JDBC driver creates a new connection, it will resolve a new different RO endpoint on subsequent attempts
-         * (assuming there is > 1 read node in your cluster)
-         */
-        java.security.Security.setProperty("networkaddress.cache.ttl" , "1");
+        * RO endpoint has a TTL of 1s, we should honor that here. Setting this aggressively makes sure that when
+        * the PG JDBC driver creates a new connection, it will resolve a new different RO endpoint on subsequent attempts
+        * (assuming there is > 1 read node in your cluster)
+        */
+       java.security.Security.setProperty("networkaddress.cache.ttl" , "1");
        // If the lookup fails, default to something like small to retry
        java.security.Security.setProperty("networkaddress.cache.negative.ttl" , "3");
    }
@@ -287,7 +287,7 @@ public class FastFailoverDriverManager {
    public Connection getConnection(String targetServerType, Duration queryTimeout) throws SQLException {
         Connection conn = DriverManager.getConnection(getJdbcConnectionString(targetServerType, queryTimeout));
 
-       /*
+        /*
          * A good practice is to set socket and statement timeout to be the same thing since both 
          * the client AND server will stop the query at the same time, leaving no running queries 
          * on the backend

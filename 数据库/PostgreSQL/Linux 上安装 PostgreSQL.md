@@ -100,19 +100,19 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
 
 PostgreSQL会创建一个默认的linux用户postgres，修改该用户密码的方法如下：
 
-1. 删除用户postgres的密码
+1. 删除用户postgres的密码：
 
    ```shell
    sudo passwd -d postgres
    ```
 
-2. 设置用户postgres的密码
+2. 设置用户postgres的密码：
 
    ```shell
    sudo -u postgres passwd
    ```
 
-   系统提示输入新的密码
+   系统提示输入新的密码：
 
    ```shell
    Enter new UNIX password:

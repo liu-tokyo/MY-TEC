@@ -83,7 +83,7 @@ Linux 我们可以看到支持 Ubuntu 和 Red Hat 等各个平台，点击具体
 2. 修改登录PostgreSQL密码
 
    ```shell
-   ALTER USER postgres WITH PASSWORD ``'postgres'``;
+   ALTER USER postgres WITH PASSWORD 'postgres';
    ```
    **注：**
 

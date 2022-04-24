@@ -78,7 +78,7 @@ TCP keepalive 过程很简单：当你建立一个 TCP 连接时，你关联了�
 
 #### 减少 DNS 缓存超时
 
-当您的应用程序在故障转移后尝试建立连接时，新的 Aurora PostgreSQL 写入器将是以前的读取器，可以在 DNS 更新完全传播之前使用 Aurora**只读终端节点找到它。**将 java DNS TTL 设置为较低的值有助于在后续连接尝试时在读取器节点之间循环。
+当您的应用程序在故障转移后尝试建立连接时，新的 Aurora PostgreSQL 写入器将是以前的读取器，可以在 DNS 更新完全传播之前使用 Aurora **只读终端节点找到它**。将 java DNS TTL 设置为较低的值有助于在后续连接尝试时在读取器节点之间循环。
 
 ```
 // Sets internal TTL to match the Aurora RO Endpoint TTL

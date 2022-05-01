@@ -16,4 +16,19 @@
 
 ## 官方说明：
 
-- https://unetbootin.github.io/
+官网：https://unetbootin.github.io/
+
+- Ubuntu 如下命令安装该软件：
+
+  ```shell
+  sudo add-apt-repository ppa:gezakovacs/ppa
+  sudo apt-get update
+  sudo apt-get install unetbootin
+  ```
+
+  安装出现问题。这个软件源存在问题，无法正确加入。
+  
+- Windows 下面安装尝试：
+
+  相对比较顺利
+  注意：因为有一个巨大文件需要拷贝，所以过程中，会出现类似于停止的感觉。只要去看 **U盘** 的容量在变化，就能确认其实拷贝一直在进行。

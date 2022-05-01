@@ -47,7 +47,7 @@
 |  -   | 参数                      | 说明                                                         | 默认值       |
 | :--: | ------------------------- | ------------------------------------------------------------ | ------------ |
 |  1   | initializationFailTimeout | 如果池无法成功初始化连接，则此属性控制池是否“快速失败”。任何正数都被认为是尝试获取初始连接的毫秒数；在此期间，应用程序线程将被阻塞。如果在超时发生之前无法获取连接，则将引发异常; | 1毫秒        |
-|  2   | isolatelnternalQueries    | 此属性决定HikariCP是否在自己的事务中隔离内部池查询，例如连接存活测试; | false        |
+|  2   | isolatelnternalQueries    | 此属性决定HikariCP是否在自己的事务中隔离内部池查询，例如连接存活测试;<br />由于这些查询通常是只读查询，因此很少有必要将它们封装在自己的事务中。此属性仅在autoCommit 禁用时适用。 | false        |
 |  3   | allowPoolSuspension       | 此属性控制池是否可以通过JMX挂起和恢复;                       | false        |
 |  4   | readOnly                  | 此属性控制默认情况下从池中获取的Connections是否处于只读模式; | false        |
 |  5   | registerMbeans            | 此属性控制是否注册JMX管理Bean（“MBean”);                     | false        |

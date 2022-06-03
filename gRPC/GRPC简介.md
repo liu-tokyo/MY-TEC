@@ -372,3 +372,9 @@ service SearchService {
 - 服务(Services)
 
 - - RPC 服务名和方法名，均使用首字母大写驼峰风格，例如service FooService{ rpc GetSomething() }
+
+
+
+参照：
+
+- https://zhuanlan.zhihu.com/p/411315625

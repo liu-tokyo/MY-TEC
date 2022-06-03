@@ -202,12 +202,13 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
 
 先启动服务端，再启动客户端，就可以看到结果：
 
-MyServer打印结果:
+- MyServer打印结果:
 
-![image.png](https://ucc.alicdn.com/pic/developer-ecology/92908e107d6a487bb930ab6cd6be269f.png)
+  ![image.png](https://ucc.alicdn.com/pic/developer-ecology/92908e107d6a487bb930ab6cd6be269f.png)
 
-MyClient打印结果：
-![image.png](https://ucc.alicdn.com/pic/developer-ecology/419e8af300b24c9eaed71a76ddc2ddeb.png)
+- MyClient打印结果：
+
+  ![image.png](https://ucc.alicdn.com/pic/developer-ecology/419e8af300b24c9eaed71a76ddc2ddeb.png)
 
 # 五、Netty的特性与重要组件
 

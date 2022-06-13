@@ -99,7 +99,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
   global中控制prometheus的全局配置，scrape_internal设置全局的从targets获取数据的频率，特定target上的设置会覆盖全局设置，evaluation_internal设置evaluate rules的频率。Prometheus使用rules来生成时间序列数据并发出alert。
 
-  rule_files指定加载rule的位置。scrape_configs指定监控的resource。Prometheus也通过HTTP endpoint来暴露自己的数据，这样就能监控自己的health。默认只有一个job prometheus，用来获取Prometheus server暴露的时间序列数据。target的数据通过 /metrics endpoint来暴露，因此，默认job通过http://localhost:9090/metrics来获取数据。
+  rule_files指定加载rule的位置。scrape_configs指定监控的resource。Prometheus也通过HTTP endpoint来暴露自己的数据，这样就能监控自己的health。默认只有一个job prometheus，用来获取Prometheus server暴露的时间序列数据。target的数据通过 /metrics endpoint来暴露，因此，默认job通过 http://localhost:9090/metrics 来获取数据。
 
   Promtheus作为一个时间序列数据库，其采集的数据会以文件的形似存储在本地中，默认的存储路径为./data，也可以通过参数`--storage.tsdb.path="data/"`来修改本地数据存储的路径。
 
@@ -113,14 +113,14 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
   ![img](https://pic3.zhimg.com/80/v2-9343d69d792e53a6024af45d7ddbe9ae_720w.jpg)
 
-  启动之后，便可以访问[http://localhost:9090](https://link.zhihu.com/?target=http%3A//localhost%3A9090/)来查看状态。也可以通过http://localhost:9090/metrics来查看prometheus自己的metrics。
+  启动之后，便可以访问 [http://localhost:9090](https://link.zhihu.com/?target=http%3A//localhost%3A9090/) 来查看状态。也可以通过 http://localhost:9090/metrics 来查看prometheus自己的metrics。
 
 - 查询
 
-  Prometheus具有内置的expression browser。访问http://localhost:9090/graph并在graph tab下选择console。Prometheus自己暴露的metric的名字为promhttp_metric_handler_requests_total，当用其作为expression code时，可以获取该名字对应的所有metrics，但具有不同的labels，不同labels表示不同的状态。
+  Prometheus具有内置的expression browser。访问 http://localhost:9090/graph 并在graph tab下选择console。Prometheus自己暴露的metric的名字为promhttp_metric_handler_requests_total，当用其作为expression code时，可以获取该名字对应的所有metrics，但具有不同的`labels`，不同`labels`表示不同的状态。
 
   ![img](https://pic4.zhimg.com/80/v2-26d969597c17e7417316011d6d814cbb_720w.jpg)
-  下面为expression code的示例，更多expression language的信息参见[Query](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/querying/basics/)。
+  下面为`expression code`的示例，更多`expression language`的信息参见[Query](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/querying/basics/)。
 
   ```text
   //只返回结果为HTTP code 200的requests
@@ -130,27 +130,27 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
   count(promhttp_metric_handler_requests_total)
   ```
 
-  图像接口访问[http://localhost:9090/graph](https://link.zhihu.com/?target=http%3A//localhost%3A9090/graph)中的graph tab。下面的expression表示获取1分钟内request result为200的频率。
+  图像接口访问 [http://localhost:9090/graph](https://link.zhihu.com/?target=http%3A//localhost%3A9090/graph) 中的graph tab。下面的expression表示获取1分钟内`request result`为200的频率。
 
   ```text
   rate(promhttp_metric_handler_requests_total{code="200"}[1m])
   ```
 
-  关于Prometheus和其他同类产品的比较，参见文章[Compar](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/introduction/comparison/)ation。
+  关于Prometheus和其他同类产品的比较，参见文章 [Comparation](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/introduction/comparison/) 。
 
 ## **Exporter**
 
-Prometheus架构中，Prometheus Server主要负责数据的收集，存储并且对外提供数据查询支持。为了能够监控到某些东西，如主机的CPU使用率，我们需要使用到Exporter。Prometheus周期性的从Exporter暴露的HTTP服务地址（通常是/metrics）拉取监控样本数据。
+**Prometheus**架构中，`Prometheus Server`主要负责数据的收集，存储并且对外提供数据查询支持。为了能够监控到某些东西，如主机的CPU使用率，我们需要使用到Exporter。`Prometheus`周期性的从`Exporter`暴露的`HTTP`服务地址（通常是/metrics）拉取监控样本数据。
 
-Exporter可以独立于监控目标，也可以内置于监控目标，只要能向Prometheus提供标准格式的监控样本数据即可。Exporter的一个实例称为target，如下所示，Prometheus通过轮询的方式定期从这些target中获取样本数据。
+`Exporter`可以独立于监控目标，也可以内置于监控目标，只要能向`Prometheus`提供标准格式的监控样本数据即可。`Exporter`的一个实例称为`target`，如下所示，`Prometheus`通过轮询的方式定期从这些`target`中获取样本数据。
 
 ![img](https://pic4.zhimg.com/80/v2-10d02b7e7c2ce379e014568f47ea68fb_720w.jpg)
 
-Exporter可以是社区提供的，也可以是用户自定义的。下面是社区提供的Exporter，可以实现大部分通用的监控功能。同时，用户可以根据Prometheus提供的Client Library创建自己的Exporter程序。
+`Exporter`可以是社区提供的，也可以是用户自定义的。下面是社区提供的Exporter，可以实现大部分通用的监控功能。同时，用户可以根据`Prometheus`提供的`Client Library`创建自己的`Exporter`程序。
 
 ![img](https://pic2.zhimg.com/80/v2-2786874c851a7bc810f44171bef71de9_720w.jpg)
 
-所有的Exporter程序都需要按照Prometheus的规范，返回监控的样本数据。Node Exporter中，访问/metrics地址时会返回以下内容：样本的一般注释信息HELP，样本的类型注释信息TYPE，样本。
+所有的`Exporter`程序都需要按照`Prometheus`的规范，返回监控的样本数据。`Node Exporter`中，访问/metrics地址时会返回以下内容：样本的一般注释信息HELP，样本的类型注释信息TYPE，样本。
 
 ```text
 # HELP node_cpu Seconds the cpus spent in each mode. -> HELP <metrics_name> <doc_string>
@@ -161,7 +161,7 @@ node_cpu{cpu="cpu0",mode="idle"} 362812.7890625
 node_load1 3.0703125
 ```
 
-下面是类型为summary和histogram的样例：
+下面是类型为`summary`和`histogram`的样例：
 
 ```text
 # A histogram, which has a pretty complex representation in the text format:
@@ -184,99 +184,99 @@ rpc_duration_seconds_sum 1.7560473e+07
 rpc_duration_seconds_count 2693
 ```
 
-可以使用cAdvisor来监控容器运行状态，详情参见文章[cAdvisor](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-prometheus-monitor-container) 。使用MySQLD Exporte来监控MySQL的性能，连接情况，使用情况等信息，详情参见文章[MYSQLD](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql)。
+可以使用cAdvisor来监控容器运行状态，详情参见文章[cAdvisor](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-prometheus-monitor-container) 。使用`MySQLD Exporter`来监控MySQL的性能，连接情况，使用情况等信息，详情参见文章[MYSQLD](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql)。
 
 
 
-- Node Exporter
+- **Node Exporter**
 
-为了能够采集到主机的运行指标如CPU, 内存，磁盘等信息。我们可以使用[Node Exporter](https://link.zhihu.com/?target=https%3A//github.com/prometheus/node_exporter)。
+  为了能够采集到主机的运行指标如CPU, 内存，磁盘等信息。我们可以使用 [Node Exporter](https://link.zhihu.com/?target=https%3A//github.com/prometheus/node_exporter) 。
 
-下载并执行Node Exporter:
+  下载并执行Node Exporter:
 
-```text
-curl -OL https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
-tar -xzf node_exporter-0.18.1.linux-amd64.tar.gz
-cd node_exporter-0.18.1.linux-amd64
-cp node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
-node_exporter
-```
+  ```text
+  curl -OL https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+  tar -xzf node_exporter-0.18.1.linux-amd64.tar.gz
+  cd node_exporter-0.18.1.linux-amd64
+  cp node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
+  node_exporter
+  ```
+  
+  启动成功后，可以看到输出：
+  
+  ```text
+  transwarp@transwarp-Latitude-5490:~/下载/node_exporter-0.18.1.linux-amd64$ node_exporter 
+  INFO[0000] Starting node_exporter (version=0.18.1, branch=HEAD, revision=3db77732e925c08f675d7404a8c46466b2ece83e)  source="node_exporter.go:156"
+  INFO[0000] Build context (go=go1.12.5, user=root@b50852a1acba, date=20190604-16:41:18)  source="node_exporter.go:157"
+  INFO[0000] Enabled collectors:                           source="node_exporter.go:97"
+  INFO[0000]  - arp                                        source="node_exporter.go:104"
+  INFO[0000]  - bcache                                     source="node_exporter.go:104"
+  INFO[0000]  - bonding                                    source="node_exporter.go:104"
+  INFO[0000]  - conntrack                                  source="node_exporter.go:104"
+  INFO[0000]  - cpu                                        source="node_exporter.go:104"
+  INFO[0000]  - cpufreq                                    source="node_exporter.go:104"
+  INFO[0000]  - diskstats                                  source="node_exporter.go:104"
+  INFO[0000]  - edac                                       source="node_exporter.go:104"
+  INFO[0000]  - entropy                                    source="node_exporter.go:104"
+  INFO[0000]  - filefd                                     source="node_exporter.go:104"
+  INFO[0000]  - filesystem                                 source="node_exporter.go:104"
+  INFO[0000]  - hwmon                                      source="node_exporter.go:104"
+  INFO[0000]  - infiniband                                 source="node_exporter.go:104"
+  INFO[0000]  - ipvs                                       source="node_exporter.go:104"
+  INFO[0000]  - loadavg                                    source="node_exporter.go:104"
+  INFO[0000]  - mdadm                                      source="node_exporter.go:104"
+  INFO[0000]  - meminfo                                    source="node_exporter.go:104"
+  INFO[0000]  - netclass                                   source="node_exporter.go:104"
+  INFO[0000]  - netdev                                     source="node_exporter.go:104"
+  INFO[0000]  - netstat                                    source="node_exporter.go:104"
+  INFO[0000]  - nfs                                        source="node_exporter.go:104"
+  INFO[0000]  - nfsd                                       source="node_exporter.go:104"
+  INFO[0000]  - pressure                                   source="node_exporter.go:104"
+  INFO[0000]  - sockstat                                   source="node_exporter.go:104"
+  INFO[0000]  - stat                                       source="node_exporter.go:104"
+  INFO[0000]  - textfile                                   source="node_exporter.go:104"
+  INFO[0000]  - time                                       source="node_exporter.go:104"
+  INFO[0000]  - timex                                      source="node_exporter.go:104"
+  INFO[0000]  - uname                                      source="node_exporter.go:104"
+  INFO[0000]  - vmstat                                     source="node_exporter.go:104"
+  INFO[0000]  - xfs                                        source="node_exporter.go:104"
+  INFO[0000]  - zfs                                        source="node_exporter.go:104"
+  INFO[0000] Listening on :9100                            source="node_exporter.go:170"
+  ```
 
-启动成功后，可以看到输出：
+  访问[http://localhost:9100/](https://link.zhihu.com/?target=http%3A//localhost%3A9100/)可以看到以下页面：
 
-```text
-transwarp@transwarp-Latitude-5490:~/下载/node_exporter-0.18.1.linux-amd64$ node_exporter 
-INFO[0000] Starting node_exporter (version=0.18.1, branch=HEAD, revision=3db77732e925c08f675d7404a8c46466b2ece83e)  source="node_exporter.go:156"
-INFO[0000] Build context (go=go1.12.5, user=root@b50852a1acba, date=20190604-16:41:18)  source="node_exporter.go:157"
-INFO[0000] Enabled collectors:                           source="node_exporter.go:97"
-INFO[0000]  - arp                                        source="node_exporter.go:104"
-INFO[0000]  - bcache                                     source="node_exporter.go:104"
-INFO[0000]  - bonding                                    source="node_exporter.go:104"
-INFO[0000]  - conntrack                                  source="node_exporter.go:104"
-INFO[0000]  - cpu                                        source="node_exporter.go:104"
-INFO[0000]  - cpufreq                                    source="node_exporter.go:104"
-INFO[0000]  - diskstats                                  source="node_exporter.go:104"
-INFO[0000]  - edac                                       source="node_exporter.go:104"
-INFO[0000]  - entropy                                    source="node_exporter.go:104"
-INFO[0000]  - filefd                                     source="node_exporter.go:104"
-INFO[0000]  - filesystem                                 source="node_exporter.go:104"
-INFO[0000]  - hwmon                                      source="node_exporter.go:104"
-INFO[0000]  - infiniband                                 source="node_exporter.go:104"
-INFO[0000]  - ipvs                                       source="node_exporter.go:104"
-INFO[0000]  - loadavg                                    source="node_exporter.go:104"
-INFO[0000]  - mdadm                                      source="node_exporter.go:104"
-INFO[0000]  - meminfo                                    source="node_exporter.go:104"
-INFO[0000]  - netclass                                   source="node_exporter.go:104"
-INFO[0000]  - netdev                                     source="node_exporter.go:104"
-INFO[0000]  - netstat                                    source="node_exporter.go:104"
-INFO[0000]  - nfs                                        source="node_exporter.go:104"
-INFO[0000]  - nfsd                                       source="node_exporter.go:104"
-INFO[0000]  - pressure                                   source="node_exporter.go:104"
-INFO[0000]  - sockstat                                   source="node_exporter.go:104"
-INFO[0000]  - stat                                       source="node_exporter.go:104"
-INFO[0000]  - textfile                                   source="node_exporter.go:104"
-INFO[0000]  - time                                       source="node_exporter.go:104"
-INFO[0000]  - timex                                      source="node_exporter.go:104"
-INFO[0000]  - uname                                      source="node_exporter.go:104"
-INFO[0000]  - vmstat                                     source="node_exporter.go:104"
-INFO[0000]  - xfs                                        source="node_exporter.go:104"
-INFO[0000]  - zfs                                        source="node_exporter.go:104"
-INFO[0000] Listening on :9100                            source="node_exporter.go:170"
-```
+  ![img](https://pic1.zhimg.com/80/v2-fcf7131db87fb3617873a14b7f068720_720w.jpg)
 
-访问[http://localhost:9100/](https://link.zhihu.com/?target=http%3A//localhost%3A9100/)可以看到以下页面：
+  访问 http://localhost:9100/metrics 可以看到Node exportor获取到的当前主机的所有监控数据。所有监控metrics以下面形式展示，HELP解释metric，TYPE说明metric的类型。
+  
+  ```text
+  # HELP node_cpu Seconds the cpus spent in each mode.
+  # TYPE node_cpu counter
+  node_cpu{cpu="cpu0",mode="idle"} 362812.7890625
+  # HELP node_load1 1m load average.
+  # TYPE node_load1 gauge
+  node_load1 3.0703125
+  ```
 
-![img](https://pic1.zhimg.com/80/v2-fcf7131db87fb3617873a14b7f068720_720w.jpg)
+  为了Prometheus Server能够收集Node Exportor的数据，将相关信息放入prometheus.yml中并重启Prometheus Server。这里使用static config方式来静态配置instance，Prometheus还支持与DNS、Consul、E2C、Kubernetes等进行集成实现自动发现Instance实例，并从这些Instance上获取监控数据。
+  
+  ```yaml
+  scrape_configs:
+    - job_name: 'prometheus'
+      static_configs:
+        - targets: ['localhost:9090']
+    # 采集node exporter监控数据
+    - job_name: 'node'
+      static_configs:
+        - targets: ['localhost:9100']
+  ```
+  
+  访问http://localhost:9090进入Prometheus server，输入up执行后便可以看到node job已经启动(1表示启动正常，0表示异常)。访问http://localhost:9090/targets可以直接从Prometheus的UI中查看当前所有的任务以及每个任务对应的实例信息。
 
-访问http://localhost:9100/metrics可以看到Node exportor获取到的当前主机的所有监控数据。所有监控metrics以下面形式展示，HELP解释metric，TYPE说明metric的类型。
+  ![img](https://pic4.zhimg.com/80/v2-a522d23ab1faef47af80ed8ad8639ebb_720w.jpg)
 
-```text
-# HELP node_cpu Seconds the cpus spent in each mode.
-# TYPE node_cpu counter
-node_cpu{cpu="cpu0",mode="idle"} 362812.7890625
-# HELP node_load1 1m load average.
-# TYPE node_load1 gauge
-node_load1 3.0703125
-```
-
-为了Prometheus Server能够收集Node Exportor的数据，将相关信息放入prometheus.yml中并重启Prometheus Server。这里使用static config方式来静态配置instance，Prometheus还支持与DNS、Consul、E2C、Kubernetes等进行集成实现自动发现Instance实例，并从这些Instance上获取监控数据。
-
-```text
-scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-  # 采集node exporter监控数据
-  - job_name: 'node'
-    static_configs:
-      - targets: ['localhost:9100']
-```
-
-访问http://localhost:9090进入Prometheus server，输入up执行后便可以看到node job已经启动(1表示启动正常，0表示异常)。访问http://localhost:9090/targets可以直接从Prometheus的UI中查看当前所有的任务以及每个任务对应的实例信息。
-
-![img](https://pic4.zhimg.com/80/v2-a522d23ab1faef47af80ed8ad8639ebb_720w.jpg)
-
-![img](https://pic4.zhimg.com/80/v2-fa82e5dc740ec2bfe2a12830ae40bd37_720w.jpg)
+  ![img](https://pic4.zhimg.com/80/v2-fa82e5dc740ec2bfe2a12830ae40bd37_720w.jpg)
 
 ## **可视化监控**
 
@@ -312,55 +312,55 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
 
 - Counter
 
-用作累计的metric,数值只能增加或在restart时被重置为0，使用场景：request数量，完成的任务数量或者发生的error数量。
+  用作累计的metric,数值只能增加或在restart时被重置为0，使用场景：request数量，完成的任务数量或者发生的error数量。
 
-提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Counter.java).
+  提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Counter.java).
 
 - Gauge
 
-用作单个的数据值，可以任意增加或减少。使用场景：记录温度，CPU使用率，并发调用数。提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Gauge.java).
+  用作单个的数据值，可以任意增加或减少。使用场景：记录温度，CPU使用率，并发调用数。提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Gauge.java).
 
 - Histogram
 
-表示样本观察者，如：request时长，response大小等，并在可配置的buckets中统计这些值，并提供对所有的观察值进行求和。统计在不同区间内样本的个数，区间通过标签len进行定义。
+  表示样本观察者，如：request时长，response大小等，并在可配置的buckets中统计这些值，并提供对所有的观察值进行求和。统计在不同区间内样本的个数，区间通过标签len进行定义。
 
-Histogram同时暴露了多个time series：<basename>_bucket，<basename>_sum，<basename>_count。
+  Histogram同时暴露了多个time series：<basename>_bucket，<basename>_sum，<basename>_count。
 
-提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Histogram.java).
-
-```text
-# HELP prometheus_tsdb_compaction_chunk_range Final time range of chunks on their first compaction
-# TYPE prometheus_tsdb_compaction_chunk_range histogram
-prometheus_tsdb_compaction_chunk_range_bucket{le="100"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="400"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="1600"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="6400"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="25600"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="102400"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="409600"} 0
-prometheus_tsdb_compaction_chunk_range_bucket{le="1.6384e+06"} 260
-prometheus_tsdb_compaction_chunk_range_bucket{le="6.5536e+06"} 780
-prometheus_tsdb_compaction_chunk_range_bucket{le="2.62144e+07"} 780
-prometheus_tsdb_compaction_chunk_range_bucket{le="+Inf"} 780
-prometheus_tsdb_compaction_chunk_range_sum 1.1540798e+09
-prometheus_tsdb_compaction_chunk_range_count 780
-```
+  提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Histogram.java).
+  
+  ```text
+  # HELP prometheus_tsdb_compaction_chunk_range Final time range of chunks on their first compaction
+  # TYPE prometheus_tsdb_compaction_chunk_range histogram
+  prometheus_tsdb_compaction_chunk_range_bucket{le="100"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="400"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="1600"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="6400"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="25600"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="102400"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="409600"} 0
+  prometheus_tsdb_compaction_chunk_range_bucket{le="1.6384e+06"} 260
+  prometheus_tsdb_compaction_chunk_range_bucket{le="6.5536e+06"} 780
+  prometheus_tsdb_compaction_chunk_range_bucket{le="2.62144e+07"} 780
+  prometheus_tsdb_compaction_chunk_range_bucket{le="+Inf"} 780
+  prometheus_tsdb_compaction_chunk_range_sum 1.1540798e+09
+  prometheus_tsdb_compaction_chunk_range_count 780
+  ```
 
 - Summary
 
-与Histogram类似，summary也表示样本观察，同时提供observation的总数以及所有被观察值的总和。记录在指定分位数对应的值。下面示例中，0.5分位的时间为0.0123，0.9分位的时间为0.0144.
+  与Histogram类似，summary也表示样本观察，同时提供observation的总数以及所有被观察值的总和。记录在指定分位数对应的值。下面示例中，0.5分位的时间为0.0123，0.9分位的时间为0.0144.
 
-```text
-# HELP prometheus_tsdb_wal_fsync_duration_seconds Duration of WAL fsync.
-# TYPE prometheus_tsdb_wal_fsync_duration_seconds summary
-prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.5"} 0.012352463
-prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.9"} 0.014458005
-prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.99"} 0.017316173
-prometheus_tsdb_wal_fsync_duration_seconds_sum 2.888716127000002
-prometheus_tsdb_wal_fsync_duration_seconds_count 216
-```
+  ```text
+  # HELP prometheus_tsdb_wal_fsync_duration_seconds Duration of WAL fsync.
+  # TYPE prometheus_tsdb_wal_fsync_duration_seconds summary
+  prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.5"} 0.012352463
+  prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.9"} 0.014458005
+  prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.99"} 0.017316173
+  prometheus_tsdb_wal_fsync_duration_seconds_sum 2.888716127000002
+  prometheus_tsdb_wal_fsync_duration_seconds_count 216
+  ```
 
-提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Summary.java).
+  提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Summary.java).
 
 ### **Jobs and Instances**
 

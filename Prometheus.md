@@ -4,7 +4,7 @@
 
 监控分为**白盒监控**和**黑盒监控**。通过白盒能够了解其内部的实际运行状态，通过对监控指标的观察能够预判可能出现的问题，从而对潜在的不确定因素进行优化。而黑盒监控，常见的如HTTP探针，TCP探针等，可以在系统或者服务在发生故障时能够快速通知相关的人员进行处理。
 
-[Prometheus](https://link.zhihu.com/?target=https%3A//github.com/prometheus) 是开源的system monitoring and alerting toolkit，是在Kubernetes之后第二个加入CNCF([Cloud Native Computing Foundation](https://link.zhihu.com/?target=https%3A//cncf.io/))的项目。
+[Prometheus](https://link.zhihu.com/?target=https%3A//github.com/prometheus) 是开源的system monitoring and alerting toolkit，是在Kubernetes之后第二个加入CNCF( [Cloud Native Computing Foundation](https://link.zhihu.com/?target=https%3A//cncf.io/) )的项目。
 
 ## **Feature**
 
@@ -44,7 +44,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
 - 二进制包安装
 
-  我们可以在[Download](https://link.zhihu.com/?target=https%3A//prometheus.io/download/)中下载相应OS的安装包，解压后，找到相应的程序prometheus (prometheus.exe for windows).
+  我们可以在 [Download](https://link.zhihu.com/?target=https%3A//prometheus.io/download/) 中下载相应OS的安装包，解压后，找到相应的程序prometheus (prometheus.exe for windows).
 
   执行下面命令查看命令语法。
 
@@ -63,7 +63,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
 - 配置
 
-  Prometheus的配置在文件prometheus.yml中，下面是配置文件的内容示例。详细的配置参见文章[Configuration](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/configuration/configuration/).
+  Prometheus的配置在文件prometheus.yml中，下面是配置文件的内容示例。详细的配置参见文章 [Configuration](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
   ```yaml
   # my global config
@@ -184,7 +184,7 @@ rpc_duration_seconds_sum 1.7560473e+07
 rpc_duration_seconds_count 2693
 ```
 
-可以使用cAdvisor来监控容器运行状态，详情参见文章[cAdvisor](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-prometheus-monitor-container) 。使用`MySQLD Exporter`来监控MySQL的性能，连接情况，使用情况等信息，详情参见文章[MYSQLD](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql)。
+可以使用cAdvisor来监控容器运行状态，详情参见文章 [cAdvisor](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-prometheus-monitor-container) 。使用`MySQLD Exporter`来监控MySQL的性能，连接情况，使用情况等信息，详情参见文章 [MYSQLD](https://link.zhihu.com/?target=https%3A//yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql)。
 
 
 
@@ -244,7 +244,7 @@ rpc_duration_seconds_count 2693
   INFO[0000] Listening on :9100                            source="node_exporter.go:170"
   ```
 
-  访问[http://localhost:9100/](https://link.zhihu.com/?target=http%3A//localhost%3A9100/)可以看到以下页面：
+  访问 [http://localhost:9100/](https://link.zhihu.com/?target=http%3A//localhost%3A9100/) 可以看到以下页面：
 
   ![img](https://pic1.zhimg.com/80/v2-fcf7131db87fb3617873a14b7f068720_720w.jpg)
 
@@ -272,7 +272,7 @@ rpc_duration_seconds_count 2693
         - targets: ['localhost:9100']
   ```
   
-  访问http://localhost:9090进入Prometheus server，输入up执行后便可以看到node job已经启动(1表示启动正常，0表示异常)。访问http://localhost:9090/targets可以直接从Prometheus的UI中查看当前所有的任务以及每个任务对应的实例信息。
+  访问 http://localhost:9090 进入Prometheus server，输入up执行后便可以看到node job已经启动(1表示启动正常，0表示异常)。访问 http://localhost:9090/targets 可以直接从Prometheus的UI中查看当前所有的任务以及每个任务对应的实例信息。
 
   ![img](https://pic4.zhimg.com/80/v2-a522d23ab1faef47af80ed8ad8639ebb_720w.jpg)
 
@@ -280,7 +280,7 @@ rpc_duration_seconds_count 2693
 
 ## **可视化监控**
 
-Grafana是一个开源的可视化平台，提供了对Prometheus的完整支持。执行下面的命令来启动Grafana，访问http://localhost:3000进入Grafana主界面，默认使用账号admin/admin。
+Grafana是一个开源的可视化平台，提供了对Prometheus的完整支持。执行下面的命令来启动Grafana，访问 http://localhost:3000 进入Grafana主界面，默认使用账号admin/admin。
 
 ```text
 docker run -d -p 3000:3000 grafana/grafana
@@ -288,7 +288,7 @@ docker run -d -p 3000:3000 grafana/grafana
 
 在Grafana的主界面中，可以添加数据源，Dashboard。
 
-添加Dashboard,添加一个类型为Graph的面板，然后在其Metrics中通过PromQL中查询需要可视化的数据，保存后便创建了Dashboard。同时，可以通过网站[https://grafana.com/dashboards](https://link.zhihu.com/?target=https%3A//grafana.com/dashboards)找到分享的dashboard,这些dashboard通过JSON文件分享，下载并导入JSON文件便可以直接使用定义好的dashboard。
+添加Dashboard,添加一个类型为Graph的面板，然后在其Metrics中通过PromQL中查询需要可视化的数据，保存后便创建了Dashboard。同时，可以通过网站 [https://grafana.com/dashboards](https://link.zhihu.com/?target=https%3A//grafana.com/dashboards) 找到分享的dashboard,这些dashboard通过JSON文件分享，下载并导入JSON文件便可以直接使用定义好的dashboard。
 
 **Data Model**
 
@@ -314,11 +314,11 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
 
   用作累计的metric,数值只能增加或在restart时被重置为0，使用场景：request数量，完成的任务数量或者发生的error数量。
 
-  提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Counter.java).
+  提供的Java API参见 [Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Counter.java).
 
 - Gauge
 
-  用作单个的数据值，可以任意增加或减少。使用场景：记录温度，CPU使用率，并发调用数。提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Gauge.java).
+  用作单个的数据值，可以任意增加或减少。使用场景：记录温度，CPU使用率，并发调用数。提供的Java API参见 [Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Gauge.java).
 
 - Histogram
 
@@ -326,7 +326,7 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
 
   Histogram同时暴露了多个time series：<basename>_bucket，<basename>_sum，<basename>_count。
 
-  提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Histogram.java).
+  提供的Java API参见 [Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Histogram.java).
   
   ```text
   # HELP prometheus_tsdb_compaction_chunk_range Final time range of chunks on their first compaction
@@ -360,7 +360,7 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
   prometheus_tsdb_wal_fsync_duration_seconds_count 216
   ```
 
-  提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Summary.java).
+  提供的Java API参见 [Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Summary.java).
 
 ### **Jobs and Instances**
 
@@ -394,7 +394,7 @@ groups:
 
 然后将该rule file添加进prometheus.yml文件中，重启prometheus即可。
 
-安装Prometheus的方法包括：二进制文件(前面安装的方式)，source文件，Docker方式。可以从[Quay.io](https://link.zhihu.com/?target=https%3A//quay.io/repository/prometheus/prometheus)或[Docker Hub](https://link.zhihu.com/?target=https%3A//hub.docker.com/r/prom/prometheus/)上获取Prometheus service的docker镜像。
+安装Prometheus的方法包括：二进制文件(前面安装的方式)，source文件，Docker方式。可以从 [Quay.io](https://link.zhihu.com/?target=https%3A//quay.io/repository/prometheus/prometheus) 或 [Docker Hub](https://link.zhihu.com/?target=https%3A//hub.docker.com/r/prom/prometheus/) 上获取Prometheus service的docker镜像。
 
 获取并执行该镜像如下：
 
@@ -425,7 +425,7 @@ docker run -p 9090:9090 my-prometheus
 
 Prometheus可以使用command line flags或configuration file来配置。前者通常用于不变的system parameters，后者定义关于job, instance, rule file的一些配置。Prometheus的配置可以runtime修改。
 
-配置文件使用--config.file来指定，以YAML格式提供。下面提供了文件的样式，详细的配置请参见[Configuration](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/configuration/configuration/)。。
+配置文件使用--config.file来指定，以YAML格式提供。下面提供了文件的样式，详细的配置请参见 [Configuration](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/configuration/configuration/) 。
 
 ```text
 global:

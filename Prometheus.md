@@ -6,7 +6,7 @@
 
 [Prometheus](https://link.zhihu.com/?target=https%3A//github.com/prometheus) 是开源的system monitoring and alerting toolkit，是在Kubernetes之后第二个加入CNCF([Cloud Native Computing Foundation](https://link.zhihu.com/?target=https%3A//cncf.io/))的项目。
 
-**Feature**
+## **Feature**
 
 - 多维的data model来展示具有时间序列的数据
 - 提供PromQL查询语言
@@ -16,7 +16,7 @@
 - 目标通过服务发现或静态配置来找到
 - 支持多种模式的graph和dashboard
 
-**Component**
+## **Component**
 
 Prometheus ecosystem包含多个组件，大部分是可选的。大部分的component使用Go语言编写。
 
@@ -26,7 +26,7 @@ Prometheus ecosystem包含多个组件，大部分是可选的。大部分的com
 - exportors: 用来支持services like HAProxy, StatsD, Graphite
 - alertmanager: 用来支持alert
 
-**Architecture**
+## **Architecture**
 
 Prometheus 使用配置的jobs来直接或间接的获取metrics，将samples保存在本地并在data上执行rules来aggregate及record新的时间序列数据并生成alert。Grafana或其他的API consumer可以抽象化收集的数据。
 
@@ -38,7 +38,7 @@ Prometheus Server为核心部件，负责实现对监控数据的获取，存储
 
 Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Prometheus Server，使其通过Exporter提供的Endpoin**t端点获得监控数据。根据是否支持Prometheus监控，Exporter分为直接采集(Kubernetes，Etcd，Gokit)和**间接采集(Client Library编写该监控目标的监控采集程序)。
 
-**Install**
+## **Install**
 
 安装prometheus可以使用二进制包安装和Docker安装。
 
@@ -138,7 +138,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
   关于Prometheus和其他同类产品的比较，参见文章[Compar](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/introduction/comparison/)ation。
 
-**Exporter**
+## **Exporter**
 
 Prometheus架构中，Prometheus Server主要负责数据的收集，存储并且对外提供数据查询支持。为了能够监控到某些东西，如主机的CPU使用率，我们需要使用到Exporter。Prometheus周期性的从Exporter暴露的HTTP服务地址（通常是/metrics）拉取监控样本数据。
 
@@ -188,7 +188,7 @@ rpc_duration_seconds_count 2693
 
 
 
--Node Exporter
+- Node Exporter
 
 为了能够采集到主机的运行指标如CPU, 内存，磁盘等信息。我们可以使用[Node Exporter](https://link.zhihu.com/?target=https%3A//github.com/prometheus/node_exporter)。
 
@@ -278,7 +278,7 @@ scrape_configs:
 
 ![img](https://pic4.zhimg.com/80/v2-fa82e5dc740ec2bfe2a12830ae40bd37_720w.jpg)
 
-**可视化监控**
+## **可视化监控**
 
 Grafana是一个开源的可视化平台，提供了对Prometheus的完整支持。执行下面的命令来启动Grafana，访问http://localhost:3000进入Grafana主界面，默认使用账号admin/admin。
 
@@ -306,7 +306,7 @@ api_http_requests_total{method="POST", handler="/messages"}
 {__name__="api_http_requests_total"，method="POST", handler="/messages"}
 ```
 
-**Metric Type**
+### **Metric Type**
 
 Prometheus client libraries提供了4种核心的metric type，但目前只在client libraries和wire protocol上有区别，Prometheus server并没有使用这些type info,而是将所有类型都当做untyped time series。将来可能会改变。
 
@@ -362,7 +362,7 @@ prometheus_tsdb_wal_fsync_duration_seconds_count 216
 
 提供的Java API参见[Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Summary.java).
 
-**Jobs and Instances**
+### **Jobs and Instances**
 
 Prometheus中，一个用来获取数据的endpoint被称为instance，通常对应一个进程。具有相同purpose的一组instances被称为job。
 
@@ -378,7 +378,7 @@ Prometheus中，一个用来获取数据的endpoint被称为instance，通常对
 - scrape_samples_scraped{job="<job-name>", instance="<instance-id>"}表示target暴露的sample数量
 - scrape_series_added{job="<job-name>", instance="<instance-id>"}表示新series的数量
 
-**Get Started**
+### **Get Started**
 
 Prometheus通过target上的HTTP endpoints来从monitored targets上搜集metrics。默认情况下，Prometheus将database存放在./data文件夹下，也可以通过--storage.tsdb.path来指定。
 
@@ -421,7 +421,7 @@ docker build -t my-prometheus .
 docker run -p 9090:9090 my-prometheus
 ```
 
-**Configuration**
+### **Configuration**
 
 Prometheus可以使用command line flags或configuration file来配置。前者通常用于不变的system parameters，后者定义关于job, instance, rule file的一些配置。Prometheus的配置可以runtime修改。
 
@@ -468,7 +468,7 @@ remote_read:
   [ - <remote_read> ... ]
 ```
 
-**Recording/Alerting Rules**
+### **Recording/Alerting Rules**
 
 Prometheus支持2种类型的rule: recording rules和alerting rules。使用rule，需要创建rule file，其中包含rule statement并在配置文件中加载rule file。Rule file可以在运行时通过向prometheus process发送SIGHUP信号来重新加载。只有当rule file的格式正确时才会被使用。
 
@@ -504,7 +504,7 @@ groups:
 
 Alerting rule使用Prometheus expression language来定义alert conditions并向external service发送alert。
 
-**Querying**
+### **Querying**
 
 Prometheus提供了功能性查询语言PromQL，用户可以实时查询并aggregate time series。查询结果可以使用Prometheus expression browser来展示并可以被external system通过HTTP API来消费。
 
@@ -556,7 +556,7 @@ avg(node_cpu) by (mode)
 sum(sum(irate(node_cpu{mode!='idle'}[5m]))  / sum(irate(node_cpu[5m]))) by (instance)
 ```
 
--Operator
+- Operator
 
 算数运算符：+,-,*,/,%,^.可作用于scalar以及vector之间，作用于vector是对其中每个元素进行操作。
 

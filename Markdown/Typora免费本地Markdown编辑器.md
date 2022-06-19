@@ -8,9 +8,8 @@ Typora 免费版官方下载链接: [Windows + Linux](https://0xo.net/go/aHR0cHM
 
   https://download.typora.io/windows/typora-setup-x64-0.11.18.exe
 
-**Windows + Linux**
-
-- https://www.typora.io/windows/dev_release.html?utm_source=0xo.net
-  - [Windows x64](https://download.typora.io/windows/typora-update-x64-1117.exe)
-  - [Windows x86](https://download.typora.io/windows/typora-update-ia32-1117.exe)
-  - [Linux x64](https://download.typora.io/linux/typora_0.11.18_amd64.deb)
+- 所有版本 - **Windows + Linux**  
+  https://www.typora.io/windows/dev_release.html?utm_source=0xo.net  
+  1. [Windows x64](https://download.typora.io/windows/typora-update-x64-1117.exe)
+  2. [Windows x86](https://download.typora.io/windows/typora-update-ia32-1117.exe)
+  3. [Linux x64](https://download.typora.io/linux/typora_0.11.18_amd64.deb)

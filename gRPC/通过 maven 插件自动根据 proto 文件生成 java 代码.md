@@ -3,20 +3,20 @@
 ## 目录
 - [通过 maven 插件自动根据 proto 文件生成 java 代码](#通过-maven-插件自动根据-proto-文件生成-java-代码)
   - [目录](#目录)
-- [1 问题：gRPC 官方文档不够详细](#1-问题grpc-官方文档不够详细)
-- [2 通过 maven 构建 java 工程](#2-通过-maven-构建-java-工程)
-  - [2.1 pom核心依赖](#21-pom核心依赖)
-  - [2.2 pom配置 proto 插件](#22-pom配置-proto-插件)
-- [3 定义 proto 文件](#3-定义-proto-文件)
-- [4 通过 maven 插件根据 proto 生成 java 代码](#4-通过-maven-插件根据-proto-生成-java-代码)
-- [5 gRPC-java，server 端代码示例](#5-grpc-javaserver-端代码示例)
-- [6 gRPC-java，client 端代码示例](#6-grpc-javaclient-端代码示例)
-- [7 gRPC-java示例代码运行结果](#7-grpc-java示例代码运行结果)
-- [8 参考](#8-参考)
+  - [1 问题：gRPC 官方文档不够详细](#1-问题grpc-官方文档不够详细)
+  - [2 通过 maven 构建 java 工程](#2-通过-maven-构建-java-工程)
+    - [2.1 pom核心依赖](#21-pom核心依赖)
+    - [2.2 pom配置 proto 插件](#22-pom配置-proto-插件)
+  - [3 定义 proto 文件](#3-定义-proto-文件)
+  - [4 通过 maven 插件根据 proto 生成 java 代码](#4-通过-maven-插件根据-proto-生成-java-代码)
+  - [5 gRPC-java，server 端代码示例](#5-grpc-javaserver-端代码示例)
+  - [6 gRPC-java，client 端代码示例](#6-grpc-javaclient-端代码示例)
+  - [7 gRPC-java示例代码运行结果](#7-grpc-java示例代码运行结果)
+  - [8 参考](#8-参考)
 
 ---
 
-# 1 问题：gRPC 官方文档不够详细
+## 1 问题：gRPC 官方文档不够详细
 
 在调研 gRPC java 时遇到一个问题，根据官方文档，没有办法一次性就把示例跑成功。
 
@@ -24,11 +24,11 @@
 
 现在提供一个端到端的，能够保证一次性就跑起来的 gRPC-java 示例程序。
 
-# 2 通过 maven 构建 java 工程
+## 2 通过 maven 构建 java 工程
 
 java version: 1.8 gRPC version: 1.29.0 pom.xml 核心配置部分
 
-## 2.1 pom核心依赖
+### 2.1 pom核心依赖
 
 ```javascript
 <dependency>
@@ -56,7 +56,7 @@ java version: 1.8 gRPC version: 1.29.0 pom.xml 核心配置部分
 </dependency>
 ```
 
-## 2.2 pom配置 proto 插件
+### 2.2 pom配置 proto 插件
 
 os-maven-plugin：此插件可以检测当前系统信息 ${os.detected.classifier}：这个变量获取操作系统的版本，例如osx-x86_64
 
@@ -92,7 +92,7 @@ os-maven-plugin：此插件可以检测当前系统信息 ${os.detected.classifi
 </build>
 ```
 
-# 3 定义 proto 文件
+## 3 定义 proto 文件
 
 在 src/main/proto 目录下放 helloworld.proto 文件
 
@@ -116,11 +116,11 @@ string message = 1;
 }
 ```
 
-# 4 通过 maven 插件根据 proto 生成 java 代码
+## 4 通过 maven 插件根据 proto 生成 java 代码
 
 执行 `mvn compile`命令，自动生成代码。 默认生成的代码在，target/generated-sources/protobuf 目录下。 其中 grpc-java 目录下放的是生成的 Service 对应的类，java 目录下放的是生成的message 对应的 java对象。
 
-# 5 gRPC-java，server 端代码示例
+## 5 gRPC-java，server 端代码示例
 
 直接运行 main 函数，服务端就开始工作。
 
@@ -194,7 +194,7 @@ responseObserver.onCompleted();
 }
 ```
 
-# 6 gRPC-java，client 端代码示例
+## 6 gRPC-java，client 端代码示例
 
 每执行一次 main 函数，client 就相当于向 server 发送了一次请求。
 
@@ -274,12 +274,13 @@ channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
 }
 ```
 
-# 7 gRPC-java示例代码运行结果
+## 7 gRPC-java示例代码运行结果
 
-# 8 参考
+## 8 参考
 
 1. [grpc-java](https://github.com/grpc/grpc-java)
 2. [os-maven-plugin](https://github.com/trustin/os-maven-plugin#issues-with-eclipse-m2e-or-other-ides)
 3. [protobuf-maven-plugin](https://www.xolstice.org/protobuf-maven-plugin/)
 
 本文参与[腾讯云自媒体分享计划](https://copyfuture.com/developer/support-plan)，欢迎正在阅读的你也加入，一起分享。
+https://copyfuture.com/blogs-details/20210816183217878y

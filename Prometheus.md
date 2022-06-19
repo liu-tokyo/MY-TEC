@@ -259,7 +259,7 @@ rpc_duration_seconds_count 2693
   node_load1 3.0703125
   ```
 
-  为了Prometheus Server能够收集Node Exportor的数据，将相关信息放入prometheus.yml中并重启Prometheus Server。这里使用static config方式来静态配置instance，Prometheus还支持与DNS、Consul、E2C、Kubernetes等进行集成实现自动发现Instance实例，并从这些Instance上获取监控数据。
+  为了Prometheus Server能够收集Node Exportor的数据，将相关信息放入`prometheus.yml`中并重启Prometheus Server。这里使用static config方式来静态配置instance，Prometheus还支持与DNS、Consul、E2C、Kubernetes等进行集成实现自动发现Instance实例，并从这些Instance上获取监控数据。
   
   ```yaml
   scrape_configs:
@@ -382,9 +382,9 @@ Prometheus中，一个用来获取数据的endpoint被称为instance，通常对
 
 Prometheus通过target上的HTTP endpoints来从monitored targets上搜集metrics。默认情况下，Prometheus将database存放在./data文件夹下，也可以通过--storage.tsdb.path来指定。
 
-Prometheus支持使用recording rules来prerecord expressions到新的time series中。下面是rule file prometheus.rules.yml：
+Prometheus支持使用recording rules来prerecord expressions到新的time series中。下面是rule file `prometheus.rules.yml`：
 
-```yaml+jinja
+```yaml
 groups:
 - name: example
   rules:
@@ -398,7 +398,7 @@ groups:
 
 获取并执行该镜像如下：
 
-```text
+```bash
 docker pull prom/prometheus
 docker run -p 9090:9090 prom/prometheus
 ```
@@ -427,7 +427,7 @@ Prometheus可以使用command line flags或configuration file来配置。前者�
 
 配置文件使用--config.file来指定，以YAML格式提供。下面提供了文件的样式，详细的配置请参见 [Configuration](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/prometheus/latest/configuration/configuration/) 。
 
-```text
+```yaml
 global:
   # How frequently to scrape targets by default.
   [ scrape_interval: <duration> | default = 1m ]
@@ -481,7 +481,7 @@ promtool check rules /path/to/example.rules.yml
 
 Recording rule和alerting rule存在于rule group中，group中的rule以相同的间隔顺序执行。语法如下：
 
-```text
+```yaml
 groups:
   name: <string>  # group name, must be unique in a file
   [interval: <duration>] | default=global.evaluation_interval #evaluation frequency

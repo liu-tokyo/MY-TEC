@@ -1,6 +1,6 @@
 ## Typora 免费本地 Markdown 编辑器
 
-大部分朋友都在用的Markdown编辑器，虽然新版本已经开始收费，但是免费版本足够我们平时工作用。
+　圈子里的大部分朋友在工作中，都在实用这款Markdown编辑器。虽然新版本已经开始收费，但是免费版本足够我们平时工作用。Markdown在技术开发方面之所以盛行，关键在于它是纯文本，不仅仅是文件超小、更在于它可以做差分处理，对项目管理非常有益。
 
 Typora 免费版官方下载链接: [Windows + Linux](https://0xo.net/go/aHR0cHM6Ly93d3cudHlwb3JhLmlvL3dpbmRvd3MvZGV2X3JlbGVhc2UuaHRtbD91dG1fc291cmNlPTB4by5uZXQ)、[macOS](https://0xo.net/go/aHR0cHM6Ly93d3cudHlwb3JhLmlvL2Rldl9yZWxlYXNlLmh0bWw_dXRtX3NvdXJjZT0weG8ubmV0) 
 

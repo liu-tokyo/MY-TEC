@@ -1,6 +1,20 @@
 # 通过 maven 插件自动根据 proto 文件生成 java 代码
 
-[TOC]
+## 目录
+- [通过 maven 插件自动根据 proto 文件生成 java 代码](#通过-maven-插件自动根据-proto-文件生成-java-代码)
+  - [目录](#目录)
+- [1 问题：gRPC 官方文档不够详细](#1-问题grpc-官方文档不够详细)
+- [2 通过 maven 构建 java 工程](#2-通过-maven-构建-java-工程)
+  - [2.1 pom核心依赖](#21-pom核心依赖)
+  - [2.2 pom配置 proto 插件](#22-pom配置-proto-插件)
+- [3 定义 proto 文件](#3-定义-proto-文件)
+- [4 通过 maven 插件根据 proto 生成 java 代码](#4-通过-maven-插件根据-proto-生成-java-代码)
+- [5 gRPC-java，server 端代码示例](#5-grpc-javaserver-端代码示例)
+- [6 gRPC-java，client 端代码示例](#6-grpc-javaclient-端代码示例)
+- [7 gRPC-java示例代码运行结果](#7-grpc-java示例代码运行结果)
+- [8 参考](#8-参考)
+
+---
 
 # 1 问题：gRPC 官方文档不够详细
 

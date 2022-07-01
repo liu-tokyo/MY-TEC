@@ -2,29 +2,23 @@
 
 JMX（Java Management Extensions，即Java管理扩展）是一个为应用程序、设备、系统等[植入](https://baike.baidu.com/item/植入/7958584)管理功能的框架。JMX可以跨越一系列异构操作系统平台、[系统体系结构](https://baike.baidu.com/item/系统体系结构/6842760)和[网络传输协议](https://baike.baidu.com/item/网络传输协议/332131)，灵活的开发无缝集成的系统、网络和服务管理应用。
 
-- 外文名
-
+- 外文名  
   Java Management Extensions
-
-- 简  称
-
-  JMX
-
-- 属  性
-
+  
+- 简  称  
+  JMX  
+  
+- 属  性  
   Java管理扩展
-
-- 作  用
-
+  
+- 作  用  
   为应用程序、设备植入管理功能
-
-- 特  点
-
+  
+- 特  点  
   JMX可以跨越异构操作系统平台
-
-- 优  点
-
-  非常容易的使应用程序具有被管理
+  
+- 优  点  
+非常容易的使应用程序具有被管理
 
 ## JMX简介
 

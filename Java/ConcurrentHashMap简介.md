@@ -22,35 +22,35 @@
 
    两个线程给不同的区段Segment中添加元素，这种情况可以并发。 所以ConcurrentHashMap可以保证线程安全(多个线程操作同一个Segment，则某个线程给此Segment加锁，另一个线程只能阻塞)并且在一定程度上提交线程并发执行效率。
 
-   两个线程给同一个区段Segment中添加元素，这种情况不可以并发， 这样JDK1.8进行了改进:
+   两个线程给同一个区段Segment中添加元素，这种情况不可以并发， 这样JDK1.8进行了改进：
 
    没有区段了，和HashMap一致了，数组+链表+红黑树 +乐观锁 + synchronized
 
-   ![img](https://img-blog.csdnimg.cn/9b438668c7a545eb9c48e28538c765a6.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_20,color_FFFFFF,t_70,g_se,x_16)
+   ![img](https：//img-blog.csdnimg.cn/9b438668c7a545eb9c48e28538c765a6.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 ## 二、乐观锁和悲观锁：
 - 2.1.悲观锁：执行的某个线程总是悲观的认为，在自己执行期间，总有其它线程与之并发执行,认为会产生安全问题，所以为了保证线程安全,在线程刚开始访问对象数据时,后立即给对象加锁,从而保证线程安全. 成了同步的效果(就是排队执行，第一个线程执行完第二个才开始)
   Synchronized就是悲观锁
 
-- 2.2.乐观锁:
+- 2.2.乐观锁：
 
-  ![img](https://img-blog.csdnimg.cn/c8921ab9be4542bda2852f0ba40695d9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https：//img-blog.csdnimg.cn/c8921ab9be4542bda2852f0ba40695d9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https://img-blog.csdnimg.cn/e978508f35474578bf7b820b9c816b56.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https：//img-blog.csdnimg.cn/e978508f35474578bf7b820b9c816b56.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https://img-blog.csdnimg.cn/a15d4aaf09fd4975ae5801cd8ac0e41b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https：//img-blog.csdnimg.cn/a15d4aaf09fd4975ae5801cd8ac0e41b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https://img-blog.csdnimg.cn/560120044a484256a1aff21a51e72884.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https：//img-blog.csdnimg.cn/560120044a484256a1aff21a51e72884.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https://img-blog.csdnimg.cn/f21c2d6bfe5c4016bc3b6b2c57a32835.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https：//img-blog.csdnimg.cn/f21c2d6bfe5c4016bc3b6b2c57a32835.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-ConcurrentHashmap和HashMap区别:
+**ConcurrentHashmap和HashMap区别：**
 
-1. HashMap是 非线程安全的,而HashTabl e和ConcurrentHashmap都是线程安全的
+1. HashMap是 非线程安全的,而HashTabl e和ConcurrentHashmap都是线程安全的。
 
-2. HashMap的key 和value均可以为null;而HashTable和Concur rentHashMap的key和value均不可以为null
+2. HashMap的key 和value均可以为null;而HashTable和ConcurrentHashMap的key和value均不可以为null。
 
-3. HashTable 和ConcurrentHashMap的区别:保证线程安全的方式不同:
+3. HashTable 和ConcurrentHashMap的区别：保证线程安全的方式不同：
 
    - 3.1.HashTable是通过给整张散列表加锁的方式来保证线程安全,这种方式保证了线程安全，但是并发执行效率低下。
    - 3.2.ConcurrentHashMap在JDK1.8之前,采用分段锁机制来保证线程安全的，这种方式可以在保证线程安全的同时,一定程度上提高并发执行效率(当多线程并发访问不同的segment时，多线程就是完全并发的，并发执行效率会提高)
@@ -60,7 +60,7 @@ ConcurrentHashmap和HashMap区别:
    
 
 ## 三、现在的数据结构：
-JDK1.8中ConcurrentHashmap保证线程安全的方式:乐观锁+Sysnchronized
+JDK1.8中ConcurrentHashmap保证线程安全的方式：乐观锁+Sysnchronized
 
 多线程并发向同一个散列桶添加元素时若散列桶为空，则触发乐观锁机制，线程获取散列桶中的版本号，在添加元素之前判断线程中的版本号与桶中的版本号是否一致
 
@@ -68,9 +68,9 @@ JDK1.8中ConcurrentHashmap保证线程安全的方式:乐观锁+Sysnchronized
 
 锁，形成链表或红黑树，JDK1.8中ConcrruentHashMap在保证线程安全的同时允许最大程序的多线程并发执行，
 
-- ConcrruentHashMap中的乐观锁说明:
+- ConcrruentHashMap中的乐观锁说明：
 
-  ![img](https://img-blog.csdnimg.cn/e5eb5866b02448309aed87f81dde1255.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https：//img-blog.csdnimg.cn/e5eb5866b02448309aed87f81dde1255.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
 - HashTable和ConcurrentHashMap保证线程安全的方式
 
@@ -99,6 +99,5 @@ JDK1.8中ConcurrentHashmap保证线程安全的方式:乐观锁+Sysnchronized
   
      }
   ```
-  
   
   

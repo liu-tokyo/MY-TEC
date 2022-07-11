@@ -26,7 +26,7 @@
 
    没有区段了，和HashMap一致了，数组+链表+红黑树 +乐观锁 + synchronized
 
-   ![img](https：//img-blog.csdnimg.cn/9b438668c7a545eb9c48e28538c765a6.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_20,color_FFFFFF,t_70,g_se,x_16)
+   ![img](https://img-blog.csdnimg.cn/9b438668c7a545eb9c48e28538c765a6.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 ## 二、乐观锁和悲观锁：
 - 2.1.悲观锁：执行的某个线程总是悲观的认为，在自己执行期间，总有其它线程与之并发执行,认为会产生安全问题，所以为了保证线程安全,在线程刚开始访问对象数据时,后立即给对象加锁,从而保证线程安全. 成了同步的效果(就是排队执行，第一个线程执行完第二个才开始)
@@ -34,19 +34,19 @@
 
 - 2.2.乐观锁：
 
-  ![img](https：//img-blog.csdnimg.cn/c8921ab9be4542bda2852f0ba40695d9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https://img-blog.csdnimg.cn/c8921ab9be4542bda2852f0ba40695d9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https：//img-blog.csdnimg.cn/e978508f35474578bf7b820b9c816b56.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https://img-blog.csdnimg.cn/e978508f35474578bf7b820b9c816b56.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https：//img-blog.csdnimg.cn/a15d4aaf09fd4975ae5801cd8ac0e41b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https://img-blog.csdnimg.cn/a15d4aaf09fd4975ae5801cd8ac0e41b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https：//img-blog.csdnimg.cn/560120044a484256a1aff21a51e72884.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https://img-blog.csdnimg.cn/560120044a484256a1aff21a51e72884.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
-  ![img](https：//img-blog.csdnimg.cn/f21c2d6bfe5c4016bc3b6b2c57a32835.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https://img-blog.csdnimg.cn/f21c2d6bfe5c4016bc3b6b2c57a32835.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
 **ConcurrentHashmap和HashMap区别：**
 
-1. HashMap是 非线程安全的,而HashTabl e和ConcurrentHashmap都是线程安全的。
+1. HashMap是 非线程安全的,而HashTable和ConcurrentHashmap都是线程安全的。
 
 2. HashMap的key 和value均可以为null;而HashTable和ConcurrentHashMap的key和value均不可以为null。
 
@@ -70,7 +70,7 @@ JDK1.8中ConcurrentHashmap保证线程安全的方式：乐观锁+Sysnchronized
 
 - ConcrruentHashMap中的乐观锁说明：
 
-  ![img](https：//img-blog.csdnimg.cn/e5eb5866b02448309aed87f81dde1255.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
+  ![img](https://img-blog.csdnimg.cn/e5eb5866b02448309aed87f81dde1255.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5a2k54us5paX5aOr,size_19,color_FFFFFF,t_70,g_se,x_16)
 
 - HashTable和ConcurrentHashMap保证线程安全的方式
 

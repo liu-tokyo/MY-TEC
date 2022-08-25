@@ -6,7 +6,7 @@
 
 [Prometheus](https://link.zhihu.com/?target=https%3A//github.com/prometheus) 是开源的system monitoring and alerting toolkit，是在Kubernetes之后第二个加入CNCF( [Cloud Native Computing Foundation](https://link.zhihu.com/?target=https%3A//cncf.io/) )的项目。
 
-## **Feature**
+## 特点（**Feature**）
 
 - 多维的data model来展示具有时间序列的数据
 - 提供PromQL查询语言
@@ -16,7 +16,7 @@
 - 目标通过服务发现或静态配置来找到
 - 支持多种模式的graph和dashboard
 
-## **Component**
+## 组件（**Component**）
 
 Prometheus ecosystem包含多个组件，大部分是可选的。大部分的component使用Go语言编写。
 
@@ -26,7 +26,7 @@ Prometheus ecosystem包含多个组件，大部分是可选的。大部分的com
 - exportors: 用来支持services like HAProxy, StatsD, Graphite
 - alertmanager: 用来支持alert
 
-## **Architecture**
+## 构架（**Architecture**）
 
 Prometheus 使用配置的jobs来直接或间接的获取metrics，将samples保存在本地并在data上执行rules来aggregate及record新的时间序列数据并生成alert。Grafana或其他的API consumer可以抽象化收集的数据。
 
@@ -38,7 +38,7 @@ Prometheus Server为核心部件，负责实现对监控数据的获取，存储
 
 Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Prometheus Server，使其通过Exporter提供的Endpoin**t端点获得监控数据。根据是否支持Prometheus监控，Exporter分为直接采集(Kubernetes，Etcd，Gokit)和**间接采集(Client Library编写该监控目标的监控采集程序)。
 
-## **Install**
+## 安装（**Install**）
 
 安装prometheus可以使用二进制包安装和Docker安装。
 
@@ -48,7 +48,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
   执行下面命令查看命令语法。
 
-  ```text
+  ```bash
   ./prometheus --help
   ```
 
@@ -138,7 +138,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
   关于Prometheus和其他同类产品的比较，参见文章 [Comparation](https://link.zhihu.com/?target=https%3A//prometheus.io/docs/introduction/comparison/) 。
 
-## **Exporter**
+## 接口（**Exporter**）
 
 **Prometheus**架构中，`Prometheus Server`主要负责数据的收集，存储并且对外提供数据查询支持。为了能够监控到某些东西，如主机的CPU使用率，我们需要使用到Exporter。`Prometheus`周期性的从`Exporter`暴露的`HTTP`服务地址（通常是/metrics）拉取监控样本数据。
 
@@ -152,7 +152,7 @@ Exporter将监控数据采集的端点通过HTTP服务的形式暴露给Promethe
 
 所有的`Exporter`程序都需要按照`Prometheus`的规范，返回监控的样本数据。`Node Exporter`中，访问/metrics地址时会返回以下内容：样本的一般注释信息HELP，样本的类型注释信息TYPE，样本。
 
-```text
+```yaml
 # HELP node_cpu Seconds the cpus spent in each mode. -> HELP <metrics_name> <doc_string>
 # TYPE node_cpu counter   -> TYPE <metrics_name> <metrics_type>
 node_cpu{cpu="cpu0",mode="idle"} 362812.7890625
@@ -163,7 +163,7 @@ node_load1 3.0703125
 
 下面是类型为`summary`和`histogram`的样例：
 
-```text
+```yaml
 # A histogram, which has a pretty complex representation in the text format:
 # HELP http_request_duration_seconds A histogram of the request duration.
 # TYPE http_request_duration_seconds histogram
@@ -194,7 +194,7 @@ rpc_duration_seconds_count 2693
 
   下载并执行Node Exporter:
 
-  ```text
+  ```bash
   curl -OL https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
   tar -xzf node_exporter-0.18.1.linux-amd64.tar.gz
   cd node_exporter-0.18.1.linux-amd64
@@ -250,7 +250,7 @@ rpc_duration_seconds_count 2693
 
   访问 http://localhost:9100/metrics 可以看到Node exportor获取到的当前主机的所有监控数据。所有监控metrics以下面形式展示，HELP解释metric，TYPE说明metric的类型。
   
-  ```text
+  ```yaml
   # HELP node_cpu Seconds the cpus spent in each mode.
   # TYPE node_cpu counter
   node_cpu{cpu="cpu0",mode="idle"} 362812.7890625
@@ -306,7 +306,7 @@ api_http_requests_total{method="POST", handler="/messages"}
 {__name__="api_http_requests_total"，method="POST", handler="/messages"}
 ```
 
-### **Metric Type**
+### 指标类型（**Metric Type**）
 
 Prometheus client libraries提供了4种核心的metric type，但目前只在client libraries和wire protocol上有区别，Prometheus server并没有使用这些type info,而是将所有类型都当做untyped time series。将来可能会改变。
 
@@ -328,7 +328,7 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
 
   提供的Java API参见 [Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Histogram.java).
   
-  ```text
+  ```yaml
   # HELP prometheus_tsdb_compaction_chunk_range Final time range of chunks on their first compaction
   # TYPE prometheus_tsdb_compaction_chunk_range histogram
   prometheus_tsdb_compaction_chunk_range_bucket{le="100"} 0
@@ -350,7 +350,7 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
 
   与Histogram类似，summary也表示样本观察，同时提供observation的总数以及所有被观察值的总和。记录在指定分位数对应的值。下面示例中，0.5分位的时间为0.0123，0.9分位的时间为0.0144.
 
-  ```text
+  ```yaml
   # HELP prometheus_tsdb_wal_fsync_duration_seconds Duration of WAL fsync.
   # TYPE prometheus_tsdb_wal_fsync_duration_seconds summary
   prometheus_tsdb_wal_fsync_duration_seconds{quantile="0.5"} 0.012352463
@@ -362,7 +362,7 @@ Prometheus client libraries提供了4种核心的metric type，但目前只在cl
 
   提供的Java API参见 [Java API](https://link.zhihu.com/?target=https%3A//github.com/prometheus/client_java/blob/master/simpleclient/src/main/java/io/prometheus/client/Summary.java).
 
-### **Jobs and Instances**
+### 作业和实例（**Jobs and Instances**）
 
 Prometheus中，一个用来获取数据的endpoint被称为instance，通常对应一个进程。具有相同purpose的一组instances被称为job。
 
@@ -378,7 +378,7 @@ Prometheus中，一个用来获取数据的endpoint被称为instance，通常对
 - scrape_samples_scraped{job="<job-name>", instance="<instance-id>"}表示target暴露的sample数量
 - scrape_series_added{job="<job-name>", instance="<instance-id>"}表示新series的数量
 
-### **Get Started**
+### 开始使用（**Get Started**）
 
 Prometheus通过target上的HTTP endpoints来从monitored targets上搜集metrics。默认情况下，Prometheus将database存放在./data文件夹下，也可以通过--storage.tsdb.path来指定。
 
@@ -409,19 +409,19 @@ Prometheus image使用volume来存放actual metrics。
 
 生成Dockerfile: 将prometheus.yml文件添加进docker的/etc/prometheus文件夹中。
 
-```text
+```yaml
 FROM prom/prometheus
 ADD prometheus.yml /etc/prometheus/
 ```
 
 然后，build和run新生成的image。
 
-```text
+```bash
 docker build -t my-prometheus .
 docker run -p 9090:9090 my-prometheus
 ```
 
-### **Configuration**
+### 配置（**Configuration**）
 
 Prometheus可以使用command line flags或configuration file来配置。前者通常用于不变的system parameters，后者定义关于job, instance, rule file的一些配置。Prometheus的配置可以runtime修改。
 
@@ -468,7 +468,7 @@ remote_read:
   [ - <remote_read> ... ]
 ```
 
-### **Recording/Alerting Rules**
+### 记录报警规则（**Recording/Alerting Rules**）
 
 Prometheus支持2种类型的rule: recording rules和alerting rules。使用rule，需要创建rule file，其中包含rule statement并在配置文件中加载rule file。Rule file可以在运行时通过向prometheus process发送SIGHUP信号来重新加载。只有当rule file的格式正确时才会被使用。
 
@@ -504,7 +504,7 @@ groups:
 
 Alerting rule使用Prometheus expression language来定义alert conditions并向external service发送alert。
 
-### **Querying**
+### 如何查询（**Querying**）
 
 Prometheus提供了功能性查询语言PromQL，用户可以实时查询并aggregate time series。查询结果可以使用Prometheus expression browser来展示并可以被external system通过HTTP API来消费。
 
@@ -512,7 +512,7 @@ Expression Language的数据类型包括：Instant vector(一组time series，�
 
 String常量使用单引号、双引号、反引号辅助表示，但是反引号中不支持转义字符。
 
-```text
+```java
 "this is a string"
 'these are unescaped: \n \\ \t'
 `these are not unescaped: \n ' " \t`
@@ -520,7 +520,7 @@ String常量使用单引号、双引号、反引号辅助表示，但是反引�
 
 下面是Instant Vector的示例：
 
-```text
+```java
 http_requests_total
 http_requests_total{job="prometheus",group="canary"}
 ```
@@ -531,13 +531,13 @@ http_requests_total{job="prometheus",group="canary"}
 
 Range vector跟instant vector类似，只是在当前时间为基准的情况下，根据设定的时间往前推迟获取time range之内的数据。duration放在[]中，跟在vector selector后面。
 
-```text
+```java
 http_requests_total{job="prometheus"}[5m]
 ```
 
 offset modifier用来修改instant vector或range vector的time offset，在当前时间基准的基础上往前推进指定offset时间作为基准时间。时间单位有s,m,h,d,w,y.
 
-```text
+```java
 http_requests_total offset 5m   //5分钟前的瞬时样本数据
 sum(http_requests_total{method="GET"} offset 5m) // GOOD.
 rate(http_requests_total[5m] offset 1w)
@@ -545,7 +545,7 @@ rate(http_requests_total[5m] offset 1w)
 
 下面是一些聚合操作：
 
-```text
+```yaml
 # 查询系统所有http请求的总量
 sum(http_request_total)
 
@@ -562,7 +562,7 @@ sum(sum(irate(node_cpu{mode!='idle'}[5m]))  / sum(irate(node_cpu[5m]))) by (inst
 
 比较运算符：==,!=,>,<,>=,<=.默认进行filter，但在运算符后提供bool将返回0或1，而不是filter。作用于scalar之间时必须提供bool，返回0,1来表示比较结果。
 
-```text
+```yaml
 (node_memory_bytes_total - node_memory_free_bytes_total) / node_memory_bytes_total > 0.95  //filter
 http_requests_total > bool 1000  //0 or 1
 ```
@@ -579,14 +579,14 @@ http_requests_total > bool 1000  //0 or 1
 
 一对一匹配要求两边标签必须完全一致，在操作符两边表达式标签不一致的情况下，可以使用on(label list)或者ignoring(label list）来修改便签的匹配行为。使用ignoreing可以在匹配时忽略某些便签。而on则用于将匹配行为限定在某些便签之内。
 
-```text
+```java
 <vector expr> <bin-op> ignoring(<label list>) <vector expr>
 <vector expr> <bin-op> on(<label list>) <vector expr>
 ```
 
 多对一和一对多两种匹配模式指的是“一”侧的每一个向量元素可以与"多"侧的多个元素匹配的情况。在这种情况下，必须使用group修饰符：group_left或者group_right来确定哪一个向量具有更高的基数（充当“多”的角色）。
 
-```text
+```java
 <vector expr> <bin-op> ignoring(<label list>) group_left(<label list>) <vector expr>
 <vector expr> <bin-op> ignoring(<label list>) group_right(<label list>) <vector expr>
 <vector expr> <bin-op> on(<label list>) group_left(<label list>) <vector expr>
@@ -601,7 +601,7 @@ http_requests_total > bool 1000  //0 or 1
 
 聚合操作语法如下：
 
-```text
+```java
 <aggr-op>([parameter,] <vector expression>) [without|by (<label list>)]
 ```
 
@@ -611,43 +611,43 @@ without用于从计算结果中移除列举的标签，而保留其它标签。b
 
 increase(v range-vector)函数是PromQL中提供的众多内置函数之一。其中参数v是一个区间向量，increase函数获取区间向量中的第一个和最后一个样本并返回其增长量。
 
-```text
+```java
 increase(node_cpu[2m]) / 120
 ```
 
 rate函数可以直接计算区间向量v在时间窗口内平均增长速率。
 
-```text
+```java
 rate(node_cpu[2m])
 ```
 
 irate同样用于计算区间向量的计算率，但是其反应出的是瞬时增长率。irate函数是通过区间向量中最后两个样本数据来计算区间向量的增长速率。这种方式可以避免在时间窗口范围内的“长尾问题”。
 
-```text
+```java
 irate(node_cpu[2m])
 ```
 
 predict_linear函数可以预测时间序列v在t秒后的值。它基于简单线性回归的方式，对时间窗口内的样本数据进行统计，从而可以对时间序列的变化趋势做出预测。下面基于2小时的样本来预测未来4小时空间是否被占满。
 
-```text
+```java
 predict_linear(node_filesystem_free{job="node"}[2h], 4 * 3600) < 0
 ```
 
 Histogram的分位数计算需要通过histogram_quantile(φ float, b instant-vector)函数进行计算。其中φ（0<φ<1）表示需要计算的分位数，如果需要计算中位数φ取值为0.5。
 
-```text
+```java
 histogram_quantile(0.5, http_request_duration_seconds_bucket)
 ```
 
 为了能够让客户端的图标更具有可读性，可以通过label_replace标签为时间序列添加额外的标签。该函数会依次对v中的每一条时间序列进行处理，通过regex匹配src_label的值，并将匹配部分relacement写入到dst_label标签中。
 
-```text
+```java
 label_replace(v instant-vector, dst_label string, replacement string, src_label string, regex string)
 ```
 
 Prometheus还提供了label_join函数，该函数可以将时间序列中v多个标签src_label的值，通过separator作为连接符写入到一个新的标签dst_label中:
 
-```text
+```java
 label_join(v instant-vector, dst_label string, separator string, src_label_1 string, src_label_2 string, ...)
 ```
 
@@ -655,7 +655,7 @@ HTTP API中使用promQL：
 
 Prometheus当前稳定的HTTP API可以通过/api/v1访问，响应格式为：
 
-```text
+```json
 {
   "status": "success" | "error",
   "data": <data>,
@@ -671,7 +671,7 @@ Prometheus当前稳定的HTTP API可以通过/api/v1访问，响应格式为：
 
 瞬间数据查询：
 
-```text
+```java
 GET /api/v1/query
 ```
 
@@ -683,7 +683,7 @@ URL请求参数：
 
 响应样例：
 
-```text
+```json
 $ curl 'http://localhost:9090/api/v1/query?query=up&time=2015-07-01T20:10:51.781Z'
 {
    "status" : "success",
@@ -713,7 +713,7 @@ $ curl 'http://localhost:9090/api/v1/query?query=up&time=2015-07-01T20:10:51.781
 
 区间数据查询：
 
-```text
+```yaml
 GET /api/v1/query_range
 ```
 

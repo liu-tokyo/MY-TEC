@@ -552,27 +552,26 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
 在这里简单地介绍一下这个数据库，它支持标准的SQL语法和JDBC接口，是一个用纯JAVA编写的数据库，其实它只有一个jar文件而已：hsqldb.jar，在%JBOSS_HOME%/server/default/lib目录下你能找到它。
 
-启动这个数据库有三种模式：Server模式、进程模式和内存模式,在Server模式下，你可以用下面的命令让它启动起来：
+- 启动这个数据库有三种模式：Server模式、进程模式和内存模式,在Server模式下，你可以用下面的命令让它启动起来：
 
-```
-$cd %JBOSS_HOME%/server/default/lib
+  ```bash
+  $cd %JBOSS_HOME%/server/default/lib
+  $ java -cp hsqldb.jar org.hsqldb.Server -database.0 mydb -dbname.0 demoDB
+  ```
 
-$ java -cp hsqldb.jar org.hsqldb.Server -database.0 mydb -dbname.0 demoDB
-```
+- 其中mydb是数据库名，demoDB是数据库别名，我们用JDBC连它是就用这个别名,用户名是sa,密码默认是空,我们下列语句就能创建表、插入数据了  
 
-其中mydb是数据库名，demoDB是数据库别名，我们用JDBC连它是就用这个别名,用户名是sa,密码默认是空,我们下列语句就能创建表、插入数据了
-
-```sql
-create table employee (
-	employee_id int,
-	employee_name varchar(50),
-	age int,
-	hiredate date
-)
-insert into employee values(1, 'linyufa', 33, '2007-12-17')
-insert into employee values(2, 'scott', 25, '2008-11-23')
-insert into employee values(3, 'larry', 35, '2004-11-23')
-```
+  ```sql
+  create table employee (
+      employee_id int,
+      employee_name varchar(50),
+      age int,
+      hiredate date
+  )
+  insert into employee values(1, 'linyufa', 33, '2007-12-17')
+  insert into employee values(2, 'scott', 25, '2008-11-23')
+  insert into employee values(3, 'larry', 35, '2004-11-23')
+  ```
 
 想进一步了解HSQL的知识，网上有很多学习资料，好了，回到我们讨论的JMS话题，有了这个数据库，那我们就不必去找其他数据库了，JMS默认是用内存模式来启动它的，所以我们基本上不用去关心它是如何工作的。
 

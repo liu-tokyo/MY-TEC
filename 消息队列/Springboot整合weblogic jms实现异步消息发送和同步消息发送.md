@@ -3,8 +3,6 @@
 项目背景1：网络分为外联网、内网。外联网不能直接请求内网，只能将请求以消息形式发送到jms server服务器上，内网去监听外联网的jms server服务器，实现内外网信息交互、同步。  
 项目背景2：用户支付完成后，需要调用第三方系统（支付宝、微信等）接口，得到支付状态后进行操作。异步
 
-废话不多说，直接撸他。。。。。。
-
 1. 安装weblogic，这个请自行百度。
 
 2. 部署jms服务器，请参看：https://blog.csdn.net/gxlstone/article/details/41378949
@@ -102,12 +100,12 @@ public class JsmConfig {
     //spring提供的连接池
     public ConnectionFactory getcachingConnectionFactory(){
         CachingConnectionFactory connectionFactory=new CachingConnectionFactory();
-        //将jms的连接池注入到spring的连接池中&#xff0c;由spring进行管理
+        //将jms的连接池注入到spring的连接池中，由spring进行管理
         connectionFactory.setTargetConnectionFactory((ConnectionFactory) jmsConnectionFactory().getObject());
         return connectionFactory;
     }
 
-    //jmsTemplate&#xff0c;消息发送器
+    //jmsTemplate，消息发送器
     @Bean("jmsTemplate")
     @ConditionalOnMissingBean
     public JmsTemplate jmsTemplate() {
@@ -128,7 +126,7 @@ public class JsmConfig {
         defaultMessageListenerContainer.setMessageListener(new JsmSessionAwareConsumer());
         //监听地址
         defaultMessageListenerContainer.setDestination((Destination) Objects.requireNonNull(jmsQueue().getObject()));
-        //设置动态线程&#xff0c;加快获取速度
+        //设置动态线程，加快获取速度
         defaultMessageListenerContainer.setConcurrency("2-4");
         return defaultMessageListenerContainer;
     }
@@ -165,7 +163,7 @@ public class JsmProducer {
     //消息目的地
     private static Queue destination;
 
-    //使用构造方法注入&#xff0c;将bean注入到静态对象里
+    //使用构造方法注入，将bean注入到静态对象里
     @Autowired
     private JsmProducer(JmsTemplate jmsTemplate, Queue destination) {
         JsmProducer.jmsTemplate = jmsTemplate;
@@ -184,9 +182,9 @@ public class JsmProducer {
     }
 
     //同步消息
-    //因为内外网交互的类必须是一致&#xff0c;包括包名。所以采用HashMap传递&#xff0c;String接收
+    //因为内外网交互的类必须是一致，包括包名。所以采用HashMap传递，String接收
     public static CommonResult sendAndReceive(final HashMap mapInfo){
-    	//该类是交互类&#xff0c;可自行定义
+    	//该类是交互类，可自行定义
         CommonResult commonResult = new CommonResult();
         try {
             //发送同步消息
@@ -250,16 +248,16 @@ public class JsmSessionAwareConsumer implements SessionAwareMessageListener<Mess
         try {
             //发起请求
             RestResponse restResponse = service.unpayment(inPayDto);
-            //返回消息用string&#xff0c;外网用string去接受
+            //返回消息用string，外网用string去接受
             String strResq = JSON.toJSONString(restResponse);
             response = session.createObjectMessage(strResq);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //建立消息消费者&#xff08;需要返回信息&#xff09;&#xff0c;设置消息目的地
+        //建立消息消费者（需要返回信息），设置消息目的地
         MessageProducer producer = session.createProducer(message.getJMSReplyTo());
         assert response != null;
-        //这一步是设置消息的id&#xff0c;不设置消息无法返回
+        //这一步是设置消息的id，不设置消息无法返回
         response.setJMSCorrelationID(message.getJMSCorrelationID());
         //返回消息
         producer.send(response);

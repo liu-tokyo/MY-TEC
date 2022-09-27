@@ -4,12 +4,16 @@
 
 ## 1.3     消息监听器MessageListener
 
-​       在Spring整合JMS的应用中我们在定义消息监听器的时候一共可以定义三种类型的消息监听器，分别是MessageListener、SessionAwareMessageListener和MessageListenerAdapter。下面就分别来介绍一下这几种类型的区别。
+在Spring整合JMS的应用中我们在定义消息监听器的时候一共可以定义三种类型的消息监听器，分别是MessageListener、SessionAwareMessageListener和MessageListenerAdapter。下面就分别来介绍一下这几种类型的区别。
+
+- MessageListener
+- SessionAwareMessageListener
+- MessageListenerAdapter
 
 
 ### 1.3.1  MessageListener
 
-MessageListener是最原始的消息监听器，它是JMS规范中定义的一个接口。其中定义了一个用于处理接收到的消息的onMessage方法，该方法只接收一个Message参数。我们前面在讲配置消费者的时候用的消息监听器就是MessageListener，代码如下：
+MessageListener是最原始的消息监听器，它是JMS规范中定义的一个接口。其中定义了一个用于处理接收到的消息的 **onMessage** 方法，该方法只接收一个Message参数。我们前面在讲配置消费者的时候用的消息监听器就是 MessageListener，代码如下：
 
 ```java
 import javax.jms.Message;
@@ -45,11 +49,10 @@ import javax.jms.TextMessage;
 
 import org.springframework.jms.listener.SessionAwareMessageListener;
 
-public class ConsumerSessionAwareMessageListener implements
-	SessionAwareMessageListener(TextMessage) {
-		private Destination destination;
+public class ConsumerSessionAwareMessageListener implements SessionAwareMessageListener(TextMessage) {
+    private Destination destination;
 		
-		public void onMessage(TextMessage message, Session session) throws JMSException {
+    public void onMessage(TextMessage message, Session session) throws JMSException {
 		System.out.println("收到一条消息");
 		System.out.println("消息内容是：" + message.getText());
 		MessageProducer producer = session.createProducer(destination);
@@ -120,14 +123,13 @@ public class ConsumerSessionAwareMessageListener implements
 		<property name="destination" ref="queueDestination"/>
 	</bean>
 	<!-- 消息监听容器 -->
-	<bean id="jmsContainer"        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="destination" ref="queueDestination" />
 		<property name="messageListener" ref="consumerMessageListener" />
 	</bean>
 	
-	<bean id="sessionAwareListenerContainer"
-		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+	<bean id="sessionAwareListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="destination" ref="sessionAwareQueue" />
 		<property name="messageListener" ref="consumerSessionAwareMessageListener" />
@@ -159,14 +161,14 @@ public class ProducerConsumerTest {
 
 ![img](http://dl2.iteye.com/upload/attachment/0086/1538/bea547c4-869a-30f0-bef2-aacdcf62d3f3.png)
 
- 这说明我们已经成功的往sessionAwareQueue发送了一条纯文本消息，消息会被ConsumerSessionAwareMessageListener的onMessage方法进行处理，在onMessage方法中ConsumerSessionAwareMessageListener就是简单的把接收到的纯文本信息的内容打印出来了，之后再往queueDestination发送了一个纯文本消息，消息内容是“ConsumerSessionAwareMessageListener…”，该消息随后就被ConsumerMessageListener处理了，根据我们的定义，在ConsumerMessageListener中也只是简单的打印了一下接收到的消息内容。
+这说明我们已经成功的往sessionAwareQueue发送了一条纯文本消息，消息会被ConsumerSessionAwareMessageListener的onMessage方法进行处理，在onMessage方法中ConsumerSessionAwareMessageListener就是简单的把接收到的纯文本信息的内容打印出来了，之后再往queueDestination发送了一个纯文本消息，消息内容是“ConsumerSessionAwareMessageListener…”，该消息随后就被ConsumerMessageListener处理了，根据我们的定义，在ConsumerMessageListener中也只是简单的打印了一下接收到的消息内容。
 
 ### 1.3.3  MessageListenerAdapter
 
 MessageListenerAdapter类实现了MessageListener接口和SessionAwareMessageListener接口，它的主要作用是将接收到的消息进行类型转换，然后通过反射的形式把它交给一个普通的Java类进行处理。
 
-- MessageListenerAdapter会把接收到的消息做如下转换：
-  
+MessageListenerAdapter会把接收到的消息做如下转换：
+
 - TextMessage转换为String对象；
   
 - BytesMessage转换为byte数组；
@@ -199,7 +201,7 @@ MessageListenerAdapter类实现了MessageListener接口和SessionAwareMessageLis
 </bean>
 ```
 
- 前面说了如果我们指定的这个目标处理器是一个MessageListener或者是一个SessionAwareMessageListener的时候Spring将直接利用接收到的Message对象作为方法参数调用它们的onMessage方法。但是如果指定的目标处理器是一个普通的Java类时Spring将利用Message进行了类型转换之后的对象作为参数通过反射去调用真正的目标处理器的处理方法，那么Spring是如何知道该调用哪个方法呢？这是通过MessageListenerAdapter的defaultListenerMethod属性来决定的，当我们没有指定该属性时，Spring会默认调用目标处理器的handleMessage方法。
+前面说了如果我们指定的这个目标处理器是一个MessageListener或者是一个SessionAwareMessageListener的时候Spring将直接利用接收到的Message对象作为方法参数调用它们的onMessage方法。但是如果指定的目标处理器是一个普通的Java类时Spring将利用Message进行了类型转换之后的对象作为参数通过反射去调用真正的目标处理器的处理方法，那么Spring是如何知道该调用哪个方法呢？这是通过MessageListenerAdapter的defaultListenerMethod属性来决定的，当我们没有指定该属性时，Spring会默认调用目标处理器的handleMessage方法。
 
 接下来我们来看一个示例，假设我们有一个普通的Java类ConsumerListener，其对应有两个方法，handleMessage和receiveMessage，其代码如下：
 
@@ -281,7 +283,7 @@ public class ProducerConsumerTest {
 
 ![img](http://dl2.iteye.com/upload/attachment/0086/1542/d0270ffa-b3e3-3405-8181-83e9cd80574b.png)
 
-MessageListenerAdapter除了会自动的把一个普通Java类当做MessageListener来处理接收到的消息之外，***\*其另外一个主要的功能是可以自动的发送返回消息\****。
+MessageListenerAdapter除了会自动的把一个普通Java类当做MessageListener来处理接收到的消息之外，**其另外一个主要的功能是可以自动的发送返回消息**。
 
 当我们用于处理接收到的消息的方法的返回值不为空的时候，Spring会自动将它封装为一个JMS Message，然后自动进行回复。那么这个时候这个回复消息将发送到哪里呢？这主要有两种方式可以指定。
 

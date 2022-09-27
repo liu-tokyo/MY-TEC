@@ -4,7 +4,7 @@
 
 ## 1.3     消息监听器MessageListener
 
-在Spring整合JMS的应用中我们在定义消息监听器的时候一共可以定义三种类型的消息监听器，分别是MessageListener、SessionAwareMessageListener和MessageListenerAdapter。下面就分别来介绍一下这几种类型的区别。
+在Spring整合JMS的应用中我们在定义消息监听器的时候，可以定义三种类型的消息监听器：
 
 - MessageListener
 - SessionAwareMessageListener
@@ -50,9 +50,9 @@ import javax.jms.TextMessage;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 
 public class ConsumerSessionAwareMessageListener implements SessionAwareMessageListener(TextMessage) {
-    private Destination destination;
+	private Destination destination;
 		
-    public void onMessage(TextMessage message, Session session) throws JMSException {
+	public void onMessage(TextMessage message, Session session) throws JMSException {
 		System.out.println("收到一条消息");
 		System.out.println("消息内容是：" + message.getText());
 		MessageProducer producer = session.createProducer(destination);

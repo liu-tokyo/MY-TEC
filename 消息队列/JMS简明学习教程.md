@@ -576,21 +576,17 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
 想进一步了解HSQL的知识，网上有很多学习资料，好了，回到我们讨论的JMS话题，有了这个数据库，那我们就不必去找其他数据库了，JMS默认是用内存模式来启动它的，所以我们基本上不用去关心它是如何工作的。
 
--  在 %JBOSS_HOME%/server/default/deploy/jms目录下，
-
-  打开hsqldb-jdbc-state-service.xml文件，
+-  在 `%JBOSS_HOME%/server/default/deploy/jms` 目录下，打开 **hsqldb-jdbc-state-service.xml** 文件：
 
   ```xml
   <depends optional-attribute-name="ConnectionManager">
   	jboss.jca:service= DataSourceBinding, name=**DefaultDS**
   </depends>
   ```
-
+  
   **DefaultDS**这个名字就是JMS连接数据库的数据源，可以让其保持默认值。
 
- 
-
-- 再在同一目录打开hsqldb-jdbc2-service.xml 文件，
+- 再在同一目录打开 **hsqldb-jdbc2-service.xml** 文件：
 
   ```xml
   <depends optional-attribute-name="ConnectionManager">
@@ -600,9 +596,7 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
   **DefaultDS**这个名字保持和前面一致即可，也可以让其保持默认值。
 
- 
-
-- 在同一目录打开jbossmq-destinations-service.xml文件，找到下面的代码段：
+- 在同一目录打开 **jbossmq-destinations-service.xml** 文件，找到下面的代码段：
 
   ```xml
   <mbean code="org.jboss.mq.server.jmx.Topic"
@@ -623,9 +617,9 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
   </mbean>
   ```
 
-  这是定义一个名叫testTopic的示例，如果你要定义一个新的topic，只需要复制这段代码，改一下name属性即可。
+  这是定义一个名叫 testTopic 的示例，如果你要定义一个新的 topic，只需要复制这段代码，改一下 name 属性即可。
 
-  同样找到下面这段的代码，这是定义一个名叫testQueue的示例，如果要定义一个新的queue，复制这段代码，改一下名字即可。
+  同样找到下面这段的代码，这是定义一个名叫 testQueue 的示例，如果要定义一个新的 queue，复制这段代码，改一下名字即可。
 
   ```xml
   <mbean code="org.jboss.mq.server.jmx.Queue"
@@ -667,8 +661,8 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
 ## 4. JMS编程其他注意事项
 
-创建一个JMS Connection、查找ConnectionFactory和Destination都是需要很大的系统开销的操作，所以我们的应用程序应避免频繁地去做这些操作。一般情况下，我们可以把ConnectionFactory，Connection, Topic, Queue定义成类的成员变量，并在类的构造函数里初始化他们，避免在每次接收和发送JMS消息时去做这些工作。但是因此也带了一个问题，就是说当Connection不可用了（比如JMS Server重启了），我们的应用程序就会开始不工作了，所以我们要有一种机制去检测我们的Connection是否有效，如果已经断掉，应该试图去重新连接，并通知系统管理员。
+创建一个 JMS Connection、查找 ConnectionFactory 和 Destination 都是需要很大的系统开销的操作，所以我们的应用程序应避免频繁地去做这些操作。一般情况下，我们可以把 ConnectionFactory，Connection, Topic, Queue 定义成类的成员变量，并在类的构造函数里初始化他们，避免在每次接收和发送JMS消息时去做这些工作。但是因此也带了一个问题，就是说当 Connection 不可用了（比如JMS Server重启了），我们的应用程序就会开始不工作了，所以我们要有一种机制去检测我们的 Connection 是否有效，如果已经断掉，应该试图去重新连接，并通知系统管理员。
 
-JMS的Connection和JDBC的Connection类似，不再使用后应该关闭，不管是正常退出，还是异常退出，否则别的客户程序可能就再也取不到连接了。Session也是如此。
+JMS的 Connection 和JDBC的 Connection 类似，不再使用后应该关闭，不管是正常退出，还是异常退出，否则别的客户程序可能就再也取不到连接了。Session 也是如此。
 
-因为JMS工作模式是异步的，我们要意识到调用Connection.start()这个方法，系统已经启动了一个新的线程在工作，也就是说退出了这行语句所在的方法之后，这个线程还在工作，它会不断地去侦听有没有新的JMS消息，直到这个Connection被关闭或不可用。
+因为JMS工作模式是异步的，我们要意识到调用 Connection.start() 这个方法，系统已经启动了一个新的线程在工作，也就是说退出了这行语句所在的方法之后，这个线程还在工作，它会不断地去侦听有没有新的JMS消息，直到这个 Connection 被关闭或不可用。

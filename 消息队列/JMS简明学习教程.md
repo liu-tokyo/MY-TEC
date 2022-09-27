@@ -575,15 +575,17 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
 想进一步了解HSQL的知识，网上有很多学习资料，好了，回到我们讨论的JMS话题，有了这个数据库，那我们就不必去找其他数据库了，JMS默认是用内存模式来启动它的，所以我们基本上不用去关心它是如何工作的。
 
--  在 `%JBOSS_HOME%/server/default/deploy/jms` 目录下，打开 **hsqldb-jdbc-state-service.xml** 文件：
+- 在 `%JBOSS_HOME%/server/default/deploy/jms` 目录下，打开 **hsqldb-jdbc-state-service.xml** 文件：
 
   ```xml
   <depends optional-attribute-name="ConnectionManager">
   	jboss.jca:service= DataSourceBinding, name=**DefaultDS**
   </depends>
   ```
-  
+
   **DefaultDS**这个名字就是JMS连接数据库的数据源，可以让其保持默认值。
+
+  
 
 - 再在同一目录打开 **hsqldb-jdbc2-service.xml** 文件：
 

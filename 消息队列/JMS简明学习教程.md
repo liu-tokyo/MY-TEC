@@ -17,7 +17,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
   消息即为消息通信的载体，消息包括Message Headers, Message properties, Message bodies
 
 - JMS有两种方式进行消息通信：Point-to-Point (P2P) 和 Publish/Subscriber (PUB/SUB)
-  - P2P方式是一对一的，一条消息只有一个接收者，默认情况下是P2P消息是持久的，也就是说发送者（sender）产生的一条消息（message）发送到消息队列（queue）之上后，只有等到消息接收者（receiver）接收到它，才会从消息队列中删除，没有被接收的消息会一直存在JMS容器里。这种方式有点像邮政通信，信件只有一个接收者，信件在接收之前，会一直存放在信箱里。
+  - P2P方式是一对一的，一条消息只有一个接收者，默认情况下P2P消息是持久的，也就是说发送者（sender）产生的一条消息（message）发送到消息队列（queue）之上后，只有等到消息接收者（receiver）接收到它，才会从消息队列中删除，没有被接收的消息会一直存在JMS容器里。这种方式有点像邮政通信，信件只有一个接收者，信件在接收之前，会一直存放在信箱里。
   - PUB/SUB方式的工作流程，首先subscriber（订阅者）向JMS容器订阅(Listen to)自己感兴趣的topic（主题），多个订阅者可以同时对一个主题进行订阅，消息发布者发布一条消息，所有订阅了该主题的订阅者都能收到这个消息。默认情况下，pub/sub方式下的消息不是持久的，这意味着，消息一经发出，不管有没有人接收，都不会保存下来，而且订阅者只能接收到自已订阅之后发布者发出的消息。这种方式有点像订阅报刊杂志，一种报刊可以有多人同时订阅，但订阅者只能收到开始订阅之后的报社发行的期刊。
 
 - JMS（Java Messaging Service）
@@ -58,7 +58,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
   TopicConnection topicConnection = topicConnectionFactory.createTopicConnection();
   ```
 
-  连接用完之后必须记得关闭，否则连接资源不会被释放掉。关闭连接的同时会自动把会话、产生者、消费者都关闭掉。
+  连接用完之后必须记得关闭，否则连接资源不会被释放掉。关闭连接的同时会自动把会话、生产者、消费者都关闭掉。
 
 - 会话（Session）
 
@@ -71,7 +71,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
 - 消息生产者（Message Producers）
 
-  消息生产者也就是消息的产生者或发送者，在P2P方式下它是`**QueueSender**`，在Pub/Sub方式下它是`**TopicPublisher**``。`它是一个由session创建的，用来把把消息发送到目的地的对象。
+  消息生产者也就是消息的产生者或发送者，在P2P方式下它是 **QueueSender**，在Pub/Sub方式下它是 **TopicPublisher**。它是一个由session创建的，用来把把消息发送到目的地的对象。
 
   ```
   QueueSender queueSender = queueSession.createSender(myQueue);
@@ -107,7 +107,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
 - 消息监听器（Message Listener）
 
-  消息监听器是一个充当消息的异步事件处理器的对象，它实现了MessageListener接口，这个接口只有一个方法onMessage，在这个方法里，你可以定义当接收到消息之后的要做的操作。你可以用setMessageListener方法为消息消费者注册一个监听器。
+  消息监听器是一个充当消息的异步事件处理器的对象，它实现了MessageListener接口，这个接口只有一个方法**onMessage**，在这个方法里，你可以定义当接收到消息之后的要做的操作。你可以用setMessageListener方法为消息消费者注册一个监听器。
 
   ```
   MessageListener listener = new MessageListener( {
@@ -121,7 +121,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
   有一点要注意，如果你先调用Connection的start，然后再调用setMessageListener，消息很可能接收不到，正确的做法是先注册监听，再启动Connection。
 
-  注册监听之后，一旦JMS容器有消费投递过来，消息消费（接收）者就会自动调用监听器的onMessage方法。这个方法的带有一个参数Message，这就接收到的消息。
+  注册监听之后，一旦JMS容器有消息投递过来，消息消费（接收）者就会自动调用监听器的onMessage方法。这个方法的带有一个参数Message，这就接收到的消息。
 
 - 消息选择器（Message Selectors）
 
@@ -137,7 +137,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
   2）属性指定一些消息头没有包括的附加信息，比如可以在属性里指定消息选择器。
 
-  3）消息体是消息的内容，有5种消息类型：TextMessage，MapMessage，BytesMessage，StreamMessage，ObjectMessage=-
+  3）消息体是消息的内容，有5种消息类型：TextMessage，MapMessage，BytesMessage，StreamMessage，ObjectMessage。
 
   ```
   TextMessage message = queueSession.createTextMessage();
@@ -183,76 +183,76 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
    * pub/sub方式的消息发送程序
    */
   public class HelloPublisher {
-      TopicConnection topicConnection;// JMS连接，属于Pub/Sub方式的连接
-      TopicSession topicSession; //JMS会话，属于Pub/Sub方式的会话
-      TopicPublisher topicPublisher; //消息发布者
-      Topic topic; //主题
-  
+  	TopicConnection topicConnection;// JMS连接，属于Pub/Sub方式的连接
+  	TopicSession topicSession; //JMS会话，属于Pub/Sub方式的会话
+  	TopicPublisher topicPublisher; //消息发布者
+  	Topic topic; //主题
+  	
   	public HelloPublisher(String factoryJNDI, String topicJNDI)
-             throws JMSException, NamingException {
-         Hashtable<String, String> env = new Hashtable<String, String>();
-         //设置好连接JMS容器的属性，不同的容器需要的属性可能不同，需要查阅相关文档
-         env.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.jnp.interfaces.NamingContextFactory");
-         env.put(Context.PROVIDER_URL, "localhost:1099");
-         env.put("java.naming.rmi.security.manager", "yes");
-         env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming");
-   
-         //创建连接JMS容器的上下文(context)
-         Context context = new InitialContext(env);
-   
-         //通过连接工厂的JNDI名查找ConnectionFactory
-         TopicConnectionFactory topicFactory =
-             (TopicConnectionFactory) context.lookup(factoryJNDI);
-   
-         //用连接工厂创建一个JMS连接
-         topicConnection = topicFactory.createTopicConnection();
-   
-         //通过JMS连接创建一个Session
-         topicSession = topicConnection.createTopicSession(false,
-                Session.AUTO_ACKNOWLEDGE);
-   
-         //通过上下文查找到一个主题(topic)
-         topic = (Topic) context.lookup(topicJNDI);
-   
-         //用session来创建一个特定主题的消息发送者
-         topicPublisher = topicSession.createPublisher(topic);
-      }   
-   
-      /**
-       * 发布一条文本消息
-       * @param msg 待发布的消息
-       * @throws JMSException
-       */
-      public void publish(String msg) throws JMSException {
-         //用session来创建一个文本类型的消息
-         TextMessage message = topicSession.createTextMessage();
-         message.setText(msg);//设置消息内容
-         topicPublisher.publish(topic, message);//消息发送，发送到特定主题
-      }
-   
-      public void close() throws JMSException {
-         topicSession.close();//关闭session
-         topicConnection.close();//关闭连接
-      }
-  
-   
-  
-      public static void main(String[] args)
-         throws JMSException, NamingException {
-         HelloPublisher publisher =
-             new HelloPublisher("ConnectionFactory", "topic/testTopic");
-         try {
-             for (int i = 1; i < 11; i++) {
-                String msg = "Hello World no. " + i;
-                System.out.println("Publishing message: " + msg);
-                publisher.publish(msg);
-             }
-             publisher.close();//session和connection用完之后一定记得关闭
-         } catch (Exception ex) {
-             ex.printStackTrace();
-         }
-      }
+  			throws JMSException, NamingException {
+  		Hashtable<String, String> env = new Hashtable<String, String>();
+  		//设置好连接JMS容器的属性，不同的容器需要的属性可能不同，需要查阅相关文档
+  		env.put(Context.INITIAL_CONTEXT_FACTORY,
+  		"org.jnp.interfaces.NamingContextFactory");
+  		env.put(Context.PROVIDER_URL, "localhost:1099");
+  		env.put("java.naming.rmi.security.manager", "yes");
+  		env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming");
+  		
+  		//创建连接JMS容器的上下文(context)
+  		Context context = new InitialContext(env);
+  		
+  		//通过连接工厂的JNDI名查找ConnectionFactory
+  		TopicConnectionFactory topicFactory =
+  		(TopicConnectionFactory) context.lookup(factoryJNDI);
+  		
+  		//用连接工厂创建一个JMS连接
+  		topicConnection = topicFactory.createTopicConnection();
+  		
+  		//通过JMS连接创建一个Session
+  		topicSession = topicConnection.createTopicSession(false,
+  		Session.AUTO_ACKNOWLEDGE);
+  		
+  		//通过上下文查找到一个主题(topic)
+  		topic = (Topic) context.lookup(topicJNDI);
+  		
+  		//用session来创建一个特定主题的消息发送者
+  		topicPublisher = topicSession.createPublisher(topic);
+  	}
+  	
+  	/**
+  	* 发布一条文本消息
+  	* @param msg 待发布的消息
+  	* @throws JMSException
+  	*/
+  	public void publish(String msg) throws JMSException {
+  		//用session来创建一个文本类型的消息
+  		TextMessage message = topicSession.createTextMessage();
+  		message.setText(msg);//设置消息内容
+  		topicPublisher.publish(topic, message);//消息发送，发送到特定主题
+  	}
+  	
+  	public void close() throws JMSException {
+  		topicSession.close();//关闭session
+  		topicConnection.close();//关闭连接
+  	}
+  	
+  	
+  	
+  	public static void main(String[] args)
+  			throws JMSException, NamingException {
+  		HelloPublisher publisher =
+  		new HelloPublisher("ConnectionFactory", "topic/testTopic");
+  		try {
+  			for (int i = 1; i < 11; i++) {
+  			String msg = "Hello World no. " + i;
+  			System.out.println("Publishing message: " + msg);
+  			publisher.publish(msg);
+  		}
+  		publisher.close();//session和connection用完之后一定记得关闭
+  		} catch (Exception ex) {
+  			ex.printStackTrace();
+  		}
+  	}
   }
   ```
 
@@ -275,7 +275,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
   ```java
   package com.jms.test;
-   
+  
   import javax.jms.JMSException;
   import javax.jms.Message;
   import javax.jms.MessageListener;
@@ -289,78 +289,75 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
   import javax.naming.Context;
   import javax.naming.InitialContext;
   import javax.naming.NamingException;
-   
+  
   /**
-   * pub/sub方式下的消息接收器。注意，这个消息接收器可以与上面的消息发送器可以工作
+  * pub/sub方式下的消息接收器。注意，这个消息接收器可以与上面的消息发送器可以工作
   * 在不同的JVM中，只要保证它们各自能够连通JMS容器(JMS Provider)
-   *
-   */
+  *
+  */
   public class HelloSubscriber implements MessageListener {
-      TopicConnection topicConnection;
-      TopicSession topicSession;
-      TopicSubscriber topicSubscriber;
-      Topic topic;
-   
-      public HelloSubscriber(String factoryJNDI, String topicJNDI)
-             throws JMSException, NamingException {
-  Hashtable<String, String> env = new Hashtable<String, String>();
-         //设置好连接JMS容器的属性，不同的容器需要的属性可能不同，需要查阅相关文档
-         env.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.jnp.interfaces.NamingContextFactory");
-         env.put(Context.PROVIDER_URL, "localhost:1099");
-         env.put("java.naming.rmi.security.manager", "yes");
-         env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming");
-         Context context = new InitialContext();
-   
-         TopicConnectionFactory topicFactory =
-             (TopicConnectionFactory) context.lookup(factoryJNDI);
-         //创建连接
-         topicConnection = topicFactory.createTopicConnection();
-         topicSession = topicConnection.createTopicSession(false,
-                Session.AUTO_ACKNOWLEDGE);//创建session
-         topic = (Topic) context.lookup(topicJNDI);//查找到主题
-         //用session创建一个特定queue的消息接收者
-         topicSubscriber = topicSession.createSubscriber(topic);
-         //注册监听，这里设置的监听是自己，因为本类已经实现了MessageListener接口，
-         //一旦queueReceiver接收到了消息，就会调用本类的onMessage方法
-         topicSubscriber.setMessageListener(this);
-         System.out.println("HelloSubscriber subscribed to topic: "
-                + topicJNDI);
-         topicConnection.start();//启动连接，这时监听器才真正生效
-      }
-   
-      public void onMessage(Message msg) {
-         try {
-             if (msg instanceof TextMessage) {
-                //把Message 转型成 TextMessage 并提取消息内容
-                String msgTxt = ((TextMessage) msg).getText();
-                System.out.println("HelloSubscriber got message: " +
-                    msgTxt);
-             }
-         } catch (JMSException ex) {
-             System.err.println("Could not get text message: " + ex);
-             ex.printStackTrace();
-         }
-      }
-   
-      public void close() throws JMSException {
-         topicSession.close();
-         topicConnection.close();
-      }
-   
-      public static void main(String[] args) {
-         try {
-             new HelloSubscriber("TopicConnectionFactory",
-                "topic/testTopic");
-         } catch (Exception ex) {
-             ex.printStackTrace();
-         }
-      }
+  	TopicConnection topicConnection;
+  	TopicSession topicSession;
+  	TopicSubscriber topicSubscriber;
+  	Topic topic;
+  	
+  	public HelloSubscriber(String factoryJNDI, String topicJNDI)
+  			throws JMSException, NamingException {
+  		Hashtable<String, String> env = new Hashtable<String, String>();
+  		//设置好连接JMS容器的属性，不同的容器需要的属性可能不同，需要查阅相关文档
+  		env.put(Context.INITIAL_CONTEXT_FACTORY,
+  		"org.jnp.interfaces.NamingContextFactory");
+  		env.put(Context.PROVIDER_URL, "localhost:1099");
+  		env.put("java.naming.rmi.security.manager", "yes");
+  		env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming");
+  		Context context = new InitialContext();
+  		
+  		TopicConnectionFactory topicFactory = (TopicConnectionFactory) context.lookup(factoryJNDI);
+  		//创建连接
+  		topicConnection = topicFactory.createTopicConnection();
+  		topicSession = topicConnection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);//创建session
+  		topic = (Topic) context.lookup(topicJNDI);//查找到主题
+  		//用session创建一个特定queue的消息接收者
+  		topicSubscriber = topicSession.createSubscriber(topic);
+  		//注册监听，这里设置的监听是自己，因为本类已经实现了MessageListener接口，
+  		//一旦queueReceiver接收到了消息，就会调用本类的onMessage方法
+  		topicSubscriber.setMessageListener(this);
+  		System.out.println("HelloSubscriber subscribed to topic: "
+  		+ topicJNDI);
+  		topicConnection.start();//启动连接，这时监听器才真正生效
+  	}
+  	
+  	public void onMessage(Message msg) {
+  		try {
+  			if (msg instanceof TextMessage) {
+  				//把Message 转型成 TextMessage 并提取消息内容
+  				String msgTxt = ((TextMessage) msg).getText();
+  				System.out.println("HelloSubscriber got message: " +
+  				msgTxt);
+  			}
+  		} catch (JMSException ex) {
+  			System.err.println("Could not get text message: " + ex);
+  			ex.printStackTrace();
+  		}
+  	}
+  	
+  	public void close() throws JMSException {
+  		topicSession.close();
+  		topicConnection.close();
+  	}
+  	
+  	public static void main(String[] args) {
+  		try {
+  			new HelloSubscriber("TopicConnectionFactory", "topic/testTopic");
+  		} catch (Exception ex) {
+  			ex.printStackTrace();
+  		}
+  	}
   }
   ```
-
+  
   程序在控制台输出：
-
+  
   ```
   HelloSubscriber subscribed to topic: topic/testTopic
   HelloSubscriber got message: Hello World no. 1
@@ -476,7 +473,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
 
   ```java
   package com.jms.test;
-   
+  
   import javax.jms.JMSException;
   import javax.jms.Message;
   import javax.jms.MessageListener;
@@ -490,50 +487,48 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
   import javax.naming.Context;
   import javax.naming.InitialContext;
   import javax.naming.NamingException;
-   
+  
   public class HelloRecvQueue implements MessageListener {
-      QueueConnection queueConnection;
-      QueueSession queueSession;
-      QueueReceiver queueReceiver;
-      Queue queue;
-   
-      public HelloRecvQueue(String factoryJNDI, String topicJNDI)
-              throws JMSException, NamingException {
-          Context context = new InitialContext();
-          QueueConnectionFactory queueFactory =
-              (QueueConnectionFactory) context.lookup(factoryJNDI);
-          queueConnection = queueFactory.createQueueConnection();
-          queueSession = queueConnection.createQueueSession(false,
-                  Session.AUTO_ACKNOWLEDGE);
-          queue = (Queue) context.lookup(topicJNDI);
-   
-          queueReceiver = queueSession.createReceiver(queue);
-          queueReceiver.setMessageListener(this);
-          System.out.println("HelloReceQueue receiver to queue: " + topicJNDI);
-          queueConnection.start();
-      }
-   
-      public void onMessage(Message m) {
-          try {
-              String msg = ((TextMessage) m).getText();
-              System.out.println("HelloReceQueue got message: " + msg);
-          } catch (JMSException ex) {
-              System.err.println("Could not get text message: " + ex);
-              ex.printStackTrace();
-          }
-      }
-   
-      public void close() throws JMSException {
-          queueSession.close();
-          queueConnection.close();
-      }
-   
-      Public ovid main(String[] args) {
-  	    new HelloRecvQueue();
+  	QueueConnection queueConnection;
+  	QueueSession queueSession;
+  	QueueReceiver queueReceiver;
+  	Queue queue;
+  	
+  	public HelloRecvQueue(String factoryJNDI, String topicJNDI)
+  			throws JMSException, NamingException {
+  		Context context = new InitialContext();
+  		QueueConnectionFactory queueFactory = (QueueConnectionFactory) context.lookup(factoryJNDI);
+  		queueConnection = queueFactory.createQueueConnection();
+  		queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+  		queue = (Queue) context.lookup(topicJNDI);
+  		
+  		queueReceiver = queueSession.createReceiver(queue);
+  		queueReceiver.setMessageListener(this);
+  		System.out.println("HelloReceQueue receiver to queue: " + topicJNDI);
+  		queueConnection.start();
+  	}
+  	
+  	public void onMessage(Message m) {
+  		try {
+  			String msg = ((TextMessage) m).getText();
+  			System.out.println("HelloReceQueue got message: " + msg);
+  		} catch (JMSException ex) {
+  			System.err.println("Could not get text message: " + ex);
+  			ex.printStackTrace();
+  		}
+  	}
+  	
+  	public void close() throws JMSException {
+  		queueSession.close();
+  		queueConnection.close();
+  	}
+  	
+  	Public ovid main(String[] args) {
+  		new HelloRecvQueue();
   	}
   }
   ```
-
+  
   程序在控制台输出：
 
   ```
@@ -548,7 +543,7 @@ JMS是应用系统或组件之间相互通信的应用程序接口，利用它�
   HelloReceQueue got message: Hello World no. 19
   HelloReceQueue got message: Hello World no. 20
   ```
-
+  
   
 
 ## 3. 配置篇
@@ -567,23 +562,15 @@ $ java -cp hsqldb.jar org.hsqldb.Server -database.0 mydb -dbname.0 demoDB
 
 其中mydb是数据库名，demoDB是数据库别名，我们用JDBC连它是就用这个别名,用户名是sa,密码默认是空,我们下列语句就能创建表、插入数据了
 
-```
+```sql
 create table employee (
-
-  employee_id int,
-
-  employee_name varchar(50),
-
-  age int,
-
-  hiredate date
-
+	employee_id int,
+	employee_name varchar(50),
+	age int,
+	hiredate date
 )
-
 insert into employee values(1, 'linyufa', 33, '2007-12-17')
-
 insert into employee values(2, 'scott', 25, '2008-11-23')
-
 insert into employee values(3, 'larry', 35, '2004-11-23')
 ```
 
@@ -593,8 +580,8 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
   打开hsqldb-jdbc-state-service.xml文件，
 
-  ```
-  - <depends optional-attribute-name="ConnectionManager">
+  ```xml
+  <depends optional-attribute-name="ConnectionManager">
   	jboss.jca:service= DataSourceBinding, name=**DefaultDS**
   </depends>
   ```
@@ -605,7 +592,7 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
 - 再在同一目录打开hsqldb-jdbc2-service.xml 文件，
 
-  ```
+  ```xml
   <depends optional-attribute-name="ConnectionManager">
       jboss.jca:service=DataSourceBinding,name=**DefaultDS**
   </depends>
@@ -617,7 +604,7 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
 - 在同一目录打开jbossmq-destinations-service.xml文件，找到下面的代码段：
 
-  ```
+  ```xml
   <mbean code="org.jboss.mq.server.jmx.Topic"
   	name="jboss.mq.destination:service=Topic,name=**testTopic**">
   	<depends optional-attribute-name="DestinationManager">
@@ -640,7 +627,7 @@ insert into employee values(3, 'larry', 35, '2004-11-23')
 
   同样找到下面这段的代码，这是定义一个名叫testQueue的示例，如果要定义一个新的queue，复制这段代码，改一下名字即可。
 
-  ```
+  ```xml
   <mbean code="org.jboss.mq.server.jmx.Queue"
   	name="jboss.mq.destination:service=Queue,name=**testQueue**">
   	<depends optional-attribute-name="DestinationManager">

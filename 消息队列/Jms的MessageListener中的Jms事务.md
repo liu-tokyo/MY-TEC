@@ -14,7 +14,7 @@
 
 我们期望的结果是：在还款操作中发送的Jms消息，随还款操作的数据库事务回滚而取消（红色底色部分的操作）；而垫付操作中发送的Jms消息，则应随垫付操作的数据库事务提交而提交（绿色底色部分的操作）。这一点在REST入口的相关日志和数据中得到了验证。但是，从MessageListener入口调用此服务时，却出现了问题：虽然还款服务的数据库事务确实回滚了，但是其中的Jms消息却成功发送了出来（参见红色字体部分）。
 
-![Jms的MessageListener中的Jms事务 _事务](http://s2.51cto.com/wyfs02/M02/8D/1A/wKioL1iG-gjzuyXgAAEzpZarhtw511.png?x-oss-process=image/format,webp/resize,m_fixed,w_750)
+![image-20220928154650534](images/image-20220928154650534.png)
 
 ## 分析
 

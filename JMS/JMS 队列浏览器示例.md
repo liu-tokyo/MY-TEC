@@ -1,5 +1,7 @@
 # JMS 队列浏览器示例
 
+> https://examples.javacodegeeks.com/enterprise-java/jms/jms-queuebrowser-example/
+
 点对点消息传递队列包含对特定目标队列感兴趣的客户端要使用的消息。如果一个人想简单地监视消息而不实际使用它们，那么掌握将允许人们提前查看待处理的消息。
 
 ## 1. 依赖关系

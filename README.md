@@ -15,3 +15,9 @@
 ```
 https://profile.oracle.com/myprofile/account/verify.jspx?key=6B26942E9B1D9BE897AC5B74B1D65F591E3172C170B57FFE0DCB9E81012D6BFDFBF607B7830C82D7CF75DD26D417304F014E3B160AC8B295B2DACA016EF2F299
 ```
+
+
+
+### OJDBC版本关系
+
+https://docs.oracle.com/en/database/oracle/oracle-database/21/jjdbc/JDBC-getting-started.html#GUID-926E5324-D89A-4A00-B1AE-975C1089F0EA

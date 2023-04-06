@@ -21,3 +21,9 @@ https://profile.oracle.com/myprofile/account/verify.jspx?key=6B26942E9B1D9BE897A
 ### OJDBC版本关系
 
 https://docs.oracle.com/en/database/oracle/oracle-database/21/jjdbc/JDBC-getting-started.html#GUID-926E5324-D89A-4A00-B1AE-975C1089F0EA
+
+
+
+## IBM MQ 官方下载地址
+
+- https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/

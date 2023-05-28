@@ -27,3 +27,10 @@ https://docs.oracle.com/en/database/oracle/oracle-database/21/jjdbc/JDBC-getting
 ## IBM MQ 官方下载地址
 
 - https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/messaging/mqadv/
+
+
+
+```
+xcopy /D /E /C /I /H /R /K /Y C:\sample F:\sample
+```
+

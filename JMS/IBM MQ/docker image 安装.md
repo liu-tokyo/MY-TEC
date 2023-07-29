@@ -8,13 +8,25 @@
 
 > Docker仓库：`https://hub.docker.com/r/ibmcom/mq`
 
-```bash
-docker run --name ibmmq -d \
-	-e LICENSE=accept \
-	-e MQ_QMGR_NAME=QM1 \
-	-p 1414:1414 -p 9443:9443 -p 9157:9157 \
-	ibmcom/mq
-```
+- 最新版本
+
+  ```bash
+  docker run --name ibmmq -d \
+  	-e LICENSE=accept \
+  	-e MQ_QMGR_NAME=QM1 \
+  	-p 1414:1414 -p 9443:9443 -p 9157:9157 \
+  	ibmcom/mq
+  ```
+
+- 指定版本 ()
+
+  ```bash
+  docker run --name ibmmq -d \
+  	-e LICENSE=accept \
+  	-e MQ_QMGR_NAME=QM1 \
+  	-p 1414:1414 -p 9443:9443 -p 9157:9157 \
+  	ibmcom/mq:9.2.0.0-r3
+  ```
 
 ## 开启控制台
 

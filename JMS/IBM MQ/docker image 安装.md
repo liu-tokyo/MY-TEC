@@ -28,24 +28,28 @@
   	ibmcom/mq:9.2.0.0-r3
   ```
 
-## 开启控制台
+## 控制台
+
+### 开启
 
 进入docker容器，执行`strmqweb`
 
-## 访问地址
+## 访问
 
-https://ip:9443/ibmmq/console
+- 地址
+
+  https://ip:9443/ibmmq/console
 
 - 用户名密码可在运行环境配置,默认
 
-  ```
+  ```bash
   User: admin
   Password: passw0rd
   ```
 
 - 输出详情控制台url
 
-  ```
+  ```bash
   bash-4.4$ dspmqweb
   MQWB1124I: Server 'mqweb' is running.
   URLS:
@@ -54,13 +58,12 @@ https://ip:9443/ibmmq/console
   bash-4.4$ strmqweb
   ```
 
-  
 
 ## 队列管理器
 
 - 创建：
 
-  ```
+  ```bash
   crtmqm -q qmgrName
   
   eg:
@@ -83,7 +86,7 @@ https://ip:9443/ibmmq/console
 
 - 删除：
 
-  ```
+  ```bash
   dltmqm qmgrName
   
   eg:
@@ -93,7 +96,7 @@ https://ip:9443/ibmmq/console
 
 - 启动：
 
-  ```
+  ```bash
   strmqm qmgrName
   
   eg:
@@ -131,7 +134,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 - #### 指令
 
-  ```
+  ```bash
   define ql (qlName) defpsist (yes) replace
   
   define qlocal(qlName)
@@ -139,7 +142,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 - #### 简单本地队列
 
-  ```
+  ```bash
   define qlocal('QLSdcGzGZEportDxp04') defpsist(yes) maxdepth(1000000) maxmsgl(11000000) replace
   ```
   
@@ -147,13 +150,13 @@ runmqsc BAASDEC_RDMRCVS_GW
 
   简单
 
-  ```
+  ```bash
   define qlocal ('QXGZEportSdcGzDxp04') usage (xmitq) defpsist(yes) maxdepth(1000000) maxmsgl(11000000)
   ```
 
   多参数
 
-  ```
+  ```bash
   DEFINE QLOCAL (BAASDEC_RDMRCVS_TRA) USAGE (XMITQ) DEFPSIST(YES) MAXDEPTH(100000) TRIGGER TRIGTYPE(FIRST) INITQ(SYSTEM.CHANNEL.INITQ) TRIGDATA(BAASDEC.RDMRCVS.CHL) REPLACE
   ```
 
@@ -189,7 +192,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 - #### 指令
 
-  ```
+  ```bash
   delete qlocal (qlName)
   ```
 
@@ -201,7 +204,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 - #### 指令
 
-  ```
+  ```bash
   define qremote (qrName) rname (AAA) rqmname (qmgrName) xmitq (qtName)
   ```
 
@@ -209,13 +212,13 @@ runmqsc BAASDEC_RDMRCVS_GW
 
   #### 简单：
 
-  ```
+  ```bash
   define qremote ('QRGZEportSdcGzDxp04') defpsist(yes) rname ('QLGZEportSdcGzDxp04') rqmname('QMGzMgr') xmitq ('QXGZEportSdcGzDxp04')
   ```
 
   #### 较多参数：
 
-  ```
+  ```bash
   DEFINE QREMOTE (BAASDEC_RDMRCVS_REMOTEQ) RNAME (RDMRCVS.RECV.BAASDEC.QUEUE) RQMNAME (RDMRCVS.CLUSTER) XMITQ (BAASDEC_RDMRCVS_TRA) CLUSTER (BAASDEC) REPLACE
   ```
 
@@ -237,7 +240,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 ### 删除
 
-- ```
+- ```bash
   delete qremote (qlName)
   ```
 
@@ -249,7 +252,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 - 定义一个死信队列DEADQ
 
-  ```
+  ```bash
   DEFINE QLOCAL（DEADQ）MAXDEPTH(290000) DEFPSIST（YES） REPLACE
   ```
 
@@ -257,7 +260,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 
 - 设定队列管理器的死信队列
 
-  ```
+  ```bash
   ALTER QMGR DEADQ(DEADQ)
   ```
 
@@ -281,7 +284,7 @@ runmqsc BAASDEC_RDMRCVS_GW
 停止：stop channel(cName)
 重置：reset channel(cName)
 
-```
+```bash
 define channel ('CHGZEportSdcGzDxp04') chltype (sdr) conname ('172.16.208.194(1415)') xmitq ('QXGZEportSdcGzDxp04') maxmsgl(11000000) discint(0) trptype (tcp)
 DEFINE CHANNEL(BAASDEC.RDMRCVS.CHL) CHLTYPE(SDR) TRPTYPE (TCP) DISCINT(0) CONNAME('22.188.183.244(1817)') XMITQ (BAASDEC_RDMRCVS_TRA) REPLACE
 ```
@@ -304,7 +307,7 @@ DEFINE CHANNEL(BAASDEC.RDMRCVS.CHL) CHLTYPE(SDR) TRPTYPE (TCP) DISCINT(0) CONNAM
 
 创建：`define channel(cName) chltype(rcvr) trptype(tcp)`
 
-```
+```bash
 define channel ('CHSdcGzGZEportDxp04') chltype (rqstr) conname('172.16.208.194(1415)') maxmsgl(11000000) trptype (tcp)
 DEFINE CHANNEL (RDMRCVS.BAASDEC.CHL) CHLTYPE (RCVR) TRPTYPE(TCP) REPLACE
 ```
@@ -321,7 +324,7 @@ DEFINE CHANNEL (RDMRCVS.BAASDEC.CHL) CHLTYPE (RCVR) TRPTYPE(TCP) REPLACE
 
 
 
-```
+```bash
 创建：define process(pName) appltype(unix) applicid('runmqchl –zzbankO –c oTocchannel')
 ```
 
@@ -335,7 +338,7 @@ DEFINE CHANNEL (RDMRCVS.BAASDEC.CHL) CHLTYPE (RCVR) TRPTYPE(TCP) REPLACE
 
 
 
-```
+```bash
 define listener(lName) trptype(tcp) control(qmgr) port(1415)
 ```
 
@@ -343,7 +346,7 @@ eg:
 
 创建监听器LSNRPMTS_BAAS
 
-```
+```bash
 DEFINE LISTENER(LSNRPMTS_BAAS) TRPTYPE(TCP) PORT(4001) BACKLOG(0) CONTROL(QMGR) REPLACE
 ```
 
@@ -369,13 +372,13 @@ DEFINE LISTENER(LSNRPMTS_BAAS) TRPTYPE(TCP) PORT(4001) BACKLOG(0) CONTROL(QMGR) 
 
 ### 启动：
 
-```
+```bash
 start listener(lName)
 ```
 
 ## 状态查看
 
-```
+```bash
 通道：dis chl(*)
 通道详细信息：dis chl(name)
 监听：dis listener(*)
@@ -448,7 +451,7 @@ start listener(lName)
 
 ## ccsid
 
-```
+```bash
 查看：display qmgr ccsid
 修改：alter qmgr ccsid(1381)
 ```

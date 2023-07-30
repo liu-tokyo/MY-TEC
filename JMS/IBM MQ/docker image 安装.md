@@ -34,7 +34,7 @@
 
 进入docker容器，执行`strmqweb`
 
-## 访问
+### 访问
 
 - 地址
 
@@ -46,6 +46,8 @@
   User: admin
   Password: passw0rd
   ```
+
+### 详情
 
 - 输出详情控制台url
 
@@ -61,7 +63,9 @@
 
 ## 队列管理器
 
-- 创建：
+### 创建
+
+- 指令：
 
   ```bash
   crtmqm -q qmgrName

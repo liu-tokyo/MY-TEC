@@ -47,3 +47,6 @@ xcopy /D /E /C /I /H /R /K /Y C:\sample F:\sample
 
 
 https://github.com/spring-attic/toolsuite-distribution/wiki/Spring-Tool-Suite-3
+
+https://stackoverflow.com/questions/22753380/rollback-or-time-out-for-jmstemplate-send
+

@@ -50,3 +50,18 @@ https://github.com/spring-attic/toolsuite-distribution/wiki/Spring-Tool-Suite-3
 
 https://stackoverflow.com/questions/22753380/rollback-or-time-out-for-jmstemplate-send
 
+
+
+## 対策
+
+次の環境変数を設定する。
+
+- Windowsの場合
+  - /path/to/gradle/bin/gradle.bat
+- その他の場合(Git Bashなどを使う時でも)
+  - /path/to/gradle/bin/gradle
+
+```
+set DEFAULT_JVM_OPTS="-Dfile.encoding=UTF-8"
+```
+

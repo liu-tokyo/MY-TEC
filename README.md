@@ -65,3 +65,35 @@ https://stackoverflow.com/questions/22753380/rollback-or-time-out-for-jmstemplat
 set DEFAULT_JVM_OPTS="-Dfile.encoding=UTF-8"
 ```
 
+
+
+```
+apply plugin: 'jacoco'
+
+def coverageSourceDirs = [
+        "${rootDir.absolutePath}/app/src",
+        "${rootDir.absolutePath}/submodule_1/src",
+        "${rootDir.absolutePath}/submodule_2/src",
+]
+
+def coverageClassDirs = [
+        fileTree(dir: "${rootDir.absolutePath}/app/build/intermediates/javac/SNMAPP__10009Debug/compileSNMAPP__10009DebugJavaWithJavac/classes", excludes: androidExclusion),
+        fileTree(dir: "${rootDir.absolutePath}/submodule_1/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: androidExclusion),
+        fileTree(dir: "${rootDir.absolutePath}/submodule_2/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: androidExclusion),
+]
+
+task jacocoTestReport_test(type: JacocoReport) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports runing tests."
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        html.destination file("${rootDir.absolutePath}/app/build/reports/jacoco")
+    }
+    sourceDirectories = files(coverageSourceDirs)
+    classDirectories = files(coverageClassDirs)
+    executionData = files("${rootDir.absolutePath}/app/build/outputs/code_coverage/SNMAPP__10009DebugAndroidTest/connected/coverage.exec")
+}
+```
+

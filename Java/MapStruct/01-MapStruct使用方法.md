@@ -22,11 +22,57 @@
 
 ### 2.2 映射类实例
 
-- 可以使用 `Mappers#getMapper` 创建 `Mapper` 类的实例
+- 可以使用 `Mappers#getMapper` 创建 `Mapper` 类的实例：
 
   ```java
   Mappers.getMapper(FooMapper.class);
   ```
+  
+- 在映射器的接口中实现实例：
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+  	CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+  	CustomerDto customerToCustomerDto(Customer customer);
+  }
+  ```
+
+  调用方法：
+
+  ```java
+  CustomerDto dto = CustomerMapper.INSTANCE.customerToCustomerDto(customer);
+  ```
+
+- 使用抽象类时，定义如下：
+
+  ```java
+  @Mapper
+  public abstract class CustomerMapper {
+  	public static final CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+  	CustomerDto customerToCustomerDto(Customer customer);
+  }
+  ```
+
+- 如果是在CDI环境中使用：
+
+  您可以通过指定 `ComponentModel.CDI` 将其用作 `@ApplicationScoped` 的 `CDI bean`。
+
+  ```java
+  @Mapper(componentModel = MappingConstants.ComponentModel.CDI)
+  public interface CustomerMapper {
+  	CustomerDto customerToCustomerDto(Customer customer);
+  }
+  ```
+
+  外部调用：
+
+  ```java
+  @Inject
+  private CustomerMapper mapper;
+  ```
+
+  
 
 ### 2.3 指定组件模型
 
@@ -61,80 +107,182 @@
 
 MapStruct 提供了多种自定义映射过程的方法。
 
-### 3.1 映射常数
+使用以下例子：
+
+- `Customer.java`
+
+  ```java
+  public class Customer {
+      private Long id;
+      private String name;
+  
+      public Customer(Long id, String name) {
+          this.id = id;
+          this.name = name;
+      }
+  
+      public Long getId() {
+          return id;
+      }
+  
+      public String getName() {
+          return name;
+      }
+  
+      @Override
+      public String toString() {
+          return String.format("Customer{id=%d, name=%s}", id, name);
+      }
+  }
+  ```
+
+- `CustomerDto:java` (简单的使用公共字段来定义)
+
+  ```java
+  public class CustomerDto {
+      public Long id;
+      public String name;
+  
+      @Override
+      public String toString() {
+          return String.format("CustomerDto{id=%d, name=%s}", id, name);
+      }
+  }
+  ```
+
+- `CustomerDto:java` （使用 `final` 来定义字段）
+
+  ```java
+  public class CustomerDto {
+      public final Long id;
+      public final String name;
+  
+      public CustomerDto(Long id, String name) {
+          this.id = id;
+          this.name = name;
+      }
+  
+      @Override
+      public String toString() {
+          return String.format("CustomerDto{id=%d, name=%s}", id, name);
+      }
+  }
+  ```
+
+  
+
+### 3.1 映射字段名
+
+- 通过定义如下所示的映射，AccountDto 的内容将自动映射到 Customer 中的同名属性：
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+      @Mapping(target = "customerName", source = "name")
+      CustomerDto customerToCustomerDto(Customer customer);
+      // 数组、列表之类的映射方法
+      List<CustomerDto> customersToCustomerDtos(List<Customer> customers);
+      CustomerDto[] customersToCustomerDtos(Customer[] customers);
+  }
+  ```
+
+  可以在映射定义中指定默认值（defaultValue）和常量值（constant）
+
+  ```java
+  @Mapping(target = "stringProperty", source = "stringProp", defaultValue = "undefined")
+  @Mapping(target = "longProperty", source = "longProp", defaultValue = "-1")
+  @Mapping(target = "stringConstant", constant = "Constant Value")
+  ```
+
+### 3.2 自定义映射 `default`
+
+- 编写自己的映射逻辑作为默认方法：
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+      default CustomerDto customerToCustomerDto(Customer customer) {
+          // ...
+      }
+  }
+  ```
+
+  
+
+### 3.3 映射常数 `constant`
 
 - 使用@Mapping的`constant`属性
 
   ```java
   @Mapper
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="name", constant = "张三")
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-### 3.2 设置默认值
+### 3.4 设置默认值 `defaultValue`
 
 - 默认值可以在`@Mapping`的`defaultValue`属性中设置
 
-  当要映射的值为空时适用。
+  当要映射的值为`空`时适用。
 
   ```java
   @Mapper
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="name", defaultValue = "张三")
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-### 3.3 执行任意Java代码
+### 3.5 执行任意Java代码 `expression`
 
 - 任何`Java`代码都可以在`@Mapping`的`Expression`属性中指定进行映射处理。
   用 `java()` 包围 `Java` 代码。
 
   ```java
   @Mapper
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="now", expression = "java(java.time.LocalDate.now())")
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-  如果使用@Mapper的imports属性，则不必先写包名。
+  如果使用`@Mapper`的`imports`属性，则不必先写包名。
 
   ```java
   @Mapper(imports = LocalDate.class)
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="now", expression = "java(LocalDate.now())")
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-### 3.4 格式化数字
+### 3.6 格式化数字 `numberFormat`
 
 - 在`@Mapping`的`numberFormat`属性中指定数字格式。
 
   ```java
   @Mapper
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="num", numberFormat = "000") // 零填充
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-### 3.5 格式化日期
+### 3.7 格式化日期 `dateFormat`
 
 - 在`@Mapping`的`dateFormat`属性中指定日期格式。
 
   ```java
   @Mapper
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="date", dateFormat = "yyyy/MM/dd")
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-### 3.6 不同枚举之间的映射
+### 3.8 不同枚举之间的映射 `ValueMapping`
 
 - 使用@ValueMapping进行枚举映射。
 
@@ -142,7 +290,7 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   @Mapper
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@ValueMapping(source = "SMALL", target = "SHORT")
   　　　　　　　　@ValueMapping(source = "MEDIUM", target = "TALL")
   　　　　　　　　@ValueMapping(source = "LARGE", target = "GRANDE")
@@ -162,11 +310,11 @@ MapStruct 提供了多种自定义映射过程的方法。
   @ValueMapping(source = MappingConstants.ANY_REMAINING, target = "LARGE")
   ```
 
-### 3.7 使用 `@Qualifier`
+### 3.9 使用 `@Qualifier`
 
-当您想要添加特殊行为时可以使用此功能。例如，添加处理以转换为大写字母。
+想要添加特殊行为时可以使用此功能。例如，添加处理以转换为大写字母。
 
-#### 创建注释
+#### (a) 创建注释
 
 创建两个组合 @Qualifier 的注释：一个用于类级别，一个用于方法级别。
 
@@ -190,7 +338,7 @@ MapStruct 提供了多种自定义映射过程的方法。
   }
   ```
 
-#### 行为定义
+#### (b) 行为定义
 
 - 创建一个定义行为的类，添加上面创建的注释。
 
@@ -204,7 +352,7 @@ MapStruct 提供了多种自定义映射过程的方法。
   }
   ```
 
-#### 创建映射
+#### (c) 创建映射
 
 - 在@Mapper的uses属性中指定定义行为的类。
 
@@ -212,39 +360,39 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   @Mapper(uses = StringConverter.class)
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(target="name", qualifiedBy = { Converter.class, ToUpper.class })
-  	Bar fooToBar(Foo foo);
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
   
 
-### 3.8 使用 `@Context`
+### 3.10 使用 `@Context`
 
 通过使用`@Context`，可以从外部更改映射行为。
 
-#### 创建映射
+#### (a) 创建映射
 
 - 添加一个参数，并将 @Context 添加到映射方法参数中。
 
   ```java
   @Mapper
-  public interface FooMapper {
-  	Bar fooToBar(Foo foo, @Context Locale locale);
+  public interface CustomerMapper {
+  	CustomerDto customerToCustomerDto(Customer customer, @Context Locale locale);
   }
   ```
 
-#### 添加自定义方法
+#### (b) 添加自定义方法
 
 - 使用给定@Context 的参数定义自定义方法。
 
-  在下面的示例中，LocalDate 类型的字段被格式化并映射到指定的 Local。
+  在下面的示例中，`LocalDate` 类型的字段被格式化并映射到指定的 Local。
 
   ```java
   @Mapper
-  public interface FooMapper {
-  	Bar fooToBar(Foo foo, @Context Locale locale);
+  public interface CustomerMapper {
+  	CustomerDto customerToCustomerDto(Customer customer, @Context Locale locale);
   
   	default String format(LocalDate date, @Context Locale locale) {
   		// 格式化以适应本地等。
@@ -252,7 +400,7 @@ MapStruct 提供了多种自定义映射过程的方法。
   }
   ```
 
-### 3.9 使用装饰器 `Decorator`
+### 3.11 使用装饰器 `Decorator`
 
 通过使用`Decorator`，您可以覆盖映射过程并添加特殊处理。
 
@@ -260,35 +408,35 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   @Mapper
-  public interface FooMapper {
-  	Bar fooToBar(Foo foo);
+  public interface CustomerMapper {
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-#### 创建装饰器类
+#### (a) 创建装饰器类
 
-- Decorator类被创建为抽象类，是Mapper的子类型，可以自定义。
+- `Decorator`类被创建为抽象类，是`Mapper`的子类型，可以自定义。
 
   ```java
-  public abstract class FooMapperDecorator implements FooMapper {
+  public abstract class CustomerMapperDecorator implements CustomerMapper {
   
-  	private final FooMapper delegate;
+  	private final CustomerMapper delegate;
   
-  	public FooMapperDecorator(FooMapper delegate) {
+  	public CustomerMapperDecorator(CustomerMapper delegate) {
   		this.delegate = delegate;
   	}
   
   	// 覆盖您想要自定义的方法
   	@Override
-  	public Bar fooToBar(Foo foo) {
-  		Bar bar = delegate.fooToBar(foo);
+  	public Bar fooToBar(Customer customer) {
+  		CustomerDto target = delegate.customerToCustomerDto(customer);
   		// 添加特殊处理
-  		return bar;
+  		return target;
   	}
   }
   ```
 
-#### 应用装饰器
+#### (b) 应用装饰器
 
 - 将`Decorator`类应用到`Mapper`类。
 
@@ -296,13 +444,13 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   @Mapper
-  @DecoratedWith(FooMapperDecorator.class)
-  public interface FooMapper {
-  	Bar fooToBar(Foo foo);
+  @DecoratedWith(CustomerMapperDecorator.class)
+  public interface CustomerMapper {
+  	CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
-### 3.10 映射前后处理
+### 3.12 映射前后处理
 
 通过使用`@BeforeMapping`和`@AfterMapping`，可以在映射过程`之前`和`之后`执行自定义的处理。
 
@@ -310,44 +458,131 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   @Mapper
-  public abstract class FooMapper {
+  public abstract class CustomerMapper {
   	// 映射之前要执行的方法
   	@BeforeMapping
-  	protected void before(Foo foo) {
+  	protected void before(Customer customer) {
   		// omit..
   	}
   
   	// 映射后要执行的方法
   	@AfterMapping
-  	protected void after(@MappingTarget Bar bar) {
+  	protected void after(@MappingTarget CustomerDto customerDto) {
   		// omit..
   	}
   
-  	public abstract Bar fooToBar(Foo foo);
+  	public abstract CustomerDto customerToCustomerDto(Customer customer);
   }
   ```
 
 - 自动生成的映射器
 
   ```java
-  public class FooMapperImpl extends FooMapper {
+  public class CustomerMapperImpl extends CustomerMapper {
   
   	@Override
-  	public Bar fooToBar(Foo foo) {
+  	public CustomerDto customerToCustomerDto(Customer customer) {
   		// 映射之前运行
-  		before( foo );
+  		before( customer );
   
-  		if ( foo == null ) {
+  		if ( customer == null ) {
   			return null;
   		}
   
   		// 测绘流程
   
   		// 映射后运行
-  		after( bar );
+  		after( customerDto );
   
-  		return bar;
+  		return customerDto;
   	}
+  }
+  ```
+
+
+### 3.13 忽略指定字段 `ignore`
+
+- 一个常见的示例是在更新 Customer 实体时使用下面的映射器来更新除 id 之外的任何内容。
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+  	@Mapping(target = "id", ignore = true)
+  	CustomerDto customerToCustomerDto(Customer customer);
+  }
+  ```
+
+### 3.14 排除更新 null 值
+
+- 如果您想要排除更新 null 值，请指定 nullValuePropertyMappingStrategy，如下所示：
+
+  ```java
+  @Mapper(nullValuePropertyMappingStrategy = IGNORE)
+  public interface CustomerPartialUpdateMapper {
+      void mapPartialUpdate(Customer input, @MappingTarget Customer target);
+  }
+  ```
+
+### 3.15 使用 `@MappingTarget`
+
+- 通过指定 `@MappingTarget` 更新对象：
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+  	void updateCustomerFromDto(CustomerDto dto, @MappingTarget Customer customer);
+  }
+  ```
+
+- 还可以在返回值中指定要更新的类：
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+  	Customer updateCustomerFromDto(CustomerDto dto, @MappingTarget Customer customer);
+  }
+  ```
+
+
+### 3.16 嵌套映射
+
+考虑一个结构，其中 CustomerDto 具有 AccountDto。
+
+- `AccountDto.java`
+
+  ```java
+  public class AccountDto {
+      public final String name;
+  
+      public AccountDto(String name) {
+          this.name = name;
+      }
+  }
+  ```
+
+- `CustomerDto.java`
+
+  ```java
+  public class CustomerDto {
+      public final Long id;
+      public final AccountDto account;
+  
+      public CustomerDto(Long id, AccountDto account) {
+          this.id = id;
+          this.account = account;
+      }
+  }
+  ```
+
+可以将嵌套对象的映射定义简化为 `target = "."`。
+
+- 通过定义如下所示的映射，`AccountDto`的内容将自动映射到`Customer`中的同名属性：
+
+  ```java
+  @Mapper
+  public interface CustomerMapper {
+      @Mapping( target = ".", source = "account" )
+      Customer customerDtoToCustomer(CustomerDto customerDto);
   }
   ```
 
@@ -359,7 +594,7 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   @Mapper(config = FooConfig.class)
-  public interface FooMapper {
+  public interface CustomerMapper {
   	@Mapping(...)
   	Bar fooToBar(Foo foo);
   
@@ -407,3 +642,11 @@ MapStruct 提供了多种自定义映射过程的方法。
   ```
 
   
+
+## Z. 参照资料
+
+1. https://qiita.com/kentama/items/7c2693c0b4311c64ea27
+
+2. 关于使用 MapStruct 映射模型和 DTO
+
+   https://qiita.com/yu-F/items/351988becbaf00cb5ae5

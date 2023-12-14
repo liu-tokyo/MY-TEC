@@ -512,9 +512,9 @@ MapStruct 提供了多种自定义映射过程的方法。
   }
   ```
 
-### 3.14 排除更新 null 值
+### 3.14 排除更新 `null` 值
 
-- 如果您想要排除更新 null 值，请指定 nullValuePropertyMappingStrategy，如下所示：
+- 如果您想要排除更新 `null` 值，请指定 `nullValuePropertyMappingStrategy` 
 
   ```java
   @Mapper(nullValuePropertyMappingStrategy = IGNORE)
@@ -546,17 +546,17 @@ MapStruct 提供了多种自定义映射过程的方法。
 
 ### 3.16 嵌套映射
 
-考虑一个结构，其中 CustomerDto 具有 AccountDto。
+考虑一个结构，其中 `CustomerDto` 具有 `AccountDto`。
 
 - `AccountDto.java`
 
   ```java
   public class AccountDto {
-      public final String name;
-  
-      public AccountDto(String name) {
-          this.name = name;
-      }
+  	public final String name;
+  	
+  	public AccountDto(String name) {
+  		this.name = name;
+  	}
   }
   ```
 
@@ -564,13 +564,13 @@ MapStruct 提供了多种自定义映射过程的方法。
 
   ```java
   public class CustomerDto {
-      public final Long id;
-      public final AccountDto account;
-  
-      public CustomerDto(Long id, AccountDto account) {
-          this.id = id;
-          this.account = account;
-      }
+  	public final Long id;
+  	public final AccountDto account;
+  	
+  	public CustomerDto(Long id, AccountDto account) {
+  		this.id = id;
+  		this.account = account;
+  	}
   }
   ```
 
@@ -581,12 +581,126 @@ MapStruct 提供了多种自定义映射过程的方法。
   ```java
   @Mapper
   public interface CustomerMapper {
-      @Mapping( target = ".", source = "account" )
-      Customer customerDtoToCustomer(CustomerDto customerDto);
+  	@Mapping( target = ".", source = "account" )
+  	Customer customerDtoToCustomer(CustomerDto customerDto);
   }
   ```
 
+### 3.17 多对一映射
+
+- MapStruct 可以将几种类型的对象映射为另外一种类型，比如：将多个 DO 对象转换为 DTO
+
+  ```java
+  @Mappings({
+  			 @Mapping(source = "userDO.birthday", target = "userBirthday",dateFormat = "yyyy-MM-dd HH:mm:ss"),
+  			@Mapping(source = "userDO.time", target = "userTime",dateFormat = "yyyy-MM-dd"),
+  			@Mapping(source = "userDO.email", target = "userEmail"),
+  			@Mapping(source = "cardDO.userCardName", target = "cardName")
+  	}
+  	)
+  	UserDTO toUserDTO(UserDO userDO, CardDO cardDO);
+  ```
+
+- 测试
+
+  ```java
+  @Test
+  	void test4(){
+  		UserDO userDo = new UserDO();
+  		userDo.setId(8888L);
+  		userDo.setUserName("gongjie");
+  		userDo.setBirthday(new Date());
+  		userDo.setTime("2021-05-09");
+  		userDo.setEmail("99@163.com");
   
+  		CardDO cardDO = new CardDO();
+  		cardDO.setUserCardId(999L);
+  		cardDO.setUserCardName("ZSYH");
+  
+  		UserDTO userDTO = MapStructConverter.INSTANCE.toUserDTO(userDo,cardDO);
+  		System.out.println("userDTO = "+ userDTO.toString());
+  	}
+  ```
+
+  > 输出结果：
+  > userDTO = UserDTO(id=8888, userName=gongjie, userBirthday=2021-05-09 22:12:04, userTime=Sun May 09 00:00:00 CST 2021, userEmail=99@163.com, cardName=ZSYH)
+
+### 3.18 自定义类型转换 `uses`
+
+- MapStructConverter进行修改，@Mapper注解增加属性 uses，导入目标类。并增加方法：testCustom
+
+  ```java
+  @Mapper(imports = {JoinUtil.class},uses = {JoinUtil.class})
+  
+  
+  @Mappings({
+  			@Mapping(source = "id",target = "id",ignore = true),
+  			@Mapping(source = "birthday", target = "userBirthday",dateFormat = "yyyy-MM-dd HH:mm:ss"),
+  	 	   @Mapping(source = "time", target = "userTime",dateFormat = "yyyy-MM-dd"),
+  			@Mapping( target = "userEmail"),
+  			@Mapping(source = "card.userCardName", target = "cardName")
+  	}
+  	)
+  	UserDTO testCustom(UserDO userDO);
+  ```
+
+### 3.19 @Named注解
+
+- MapStructConverter 内增加一个不带 public 的JoinUtil3类，在要被执行的方法上加注解 @Named并指定名称。
+
+  ```java
+  class JoinUtil3{
+  
+  	@Named("join123")
+  	public static String join(String oldStr){
+  		return oldStr + "====expression====";
+  	}
+  	
+  	@Named("join1234")
+  	public static String join1(String oldStr){
+  		return oldStr + "====另外一种拼接方式====";
+  	}
+  }
+  ```
+
+- MapStructConverter 进行修改，uses属性指向 JoinUtil3，再增加一个方法：testNamed，在userEmail映射关系上新增qualifiedByName属性，该属性的值要与 @Named的值保持一致，根据该值来判断需要执行那个方法。
+
+  ```java
+  @Mapper(imports = {JoinUtil.class},uses = {JoinUtil3.class})
+  
+    @Mappings({
+  			@Mapping(source = "id",target = "id",ignore = true),
+  			@Mapping(source = "birthday", target = "userBirthday",dateFormat = "yyyy-MM-dd HH:mm:ss"),
+  			@Mapping(source = "time", target = "userTime",dateFormat = "yyyy-MM-dd"),
+  	 	   @Mapping(source="email",target = "userEmail",qualifiedByName = "join123"),
+  			@Mapping(source = "card.userCardName", target = "cardName")
+  	}
+  	)
+  	UserDTO testNamed(UserDO userDO);
+  ```
+
+- 测试代码
+
+  ```java
+  	@Test
+  	void test9(){
+  		UserDO userDo = new UserDO();
+  		userDo.setId(8888L);
+  		userDo.setUserName("gongjie");
+  		userDo.setBirthday(new Date());
+  		userDo.setTime("2021-05-09");
+  		userDo.setEmail("99@163.com");
+  
+  		System.out.println("userDo = "+ userDo.toString());
+  		UserDTO userDTO = MapStructConverter.INSTANCE.testNamed(userDo);
+  		System.out.println("userDTO = "+ userDTO.toString());
+  	}
+  ```
+
+  > 结果：
+  > userDo = UserDO(id=8888, userName=gongjie, birthday=Mon May 10 22:41:43 CST 2021, time=2021-05-09, email=99@163.com, card=null)
+  > 	
+  > userDTO = UserDTO(id=null, userName=gongjie, userBirthday=2021-05-10 22:41:43, userTime=Sun May 09 00:00:00 CST 2021, userEmail=99@163.com====expression====, cardName=null)
 
 ## 4. 映射重用
 
@@ -641,7 +755,25 @@ MapStruct 提供了多种自定义映射过程的方法。
   }
   ```
 
-  
+
+## 6. 注册到Spring
+
+`@Mapper`注解中有个属性为 `componentModel`，`componentModel`的值有四种：
+
+- 
+  default: 默认值，不使用组件类型, 通过Mappers.getMapper(Class)方式获取实例对象
+
+
+- 
+  cdi: 生成的映射是一个应用程序范围的 cdi 的bean，可以通过@Inject进行检索
+
+
+- 
+  spring: 生成的实现类上面会自动添加一个@Component注解，可以通过 Spring 的 @Autowired方式进行注入
+
+
+- 
+  jsr330: 生成的实现类上会添加@javax.inject.Named注解，可以通过 @Inject 注解获取。
 
 ## Z. 参照资料
 

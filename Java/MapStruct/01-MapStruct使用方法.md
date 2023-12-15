@@ -2,6 +2,27 @@
 
 ## 1. 环境设置
 
+- `build.gradle`
+
+  ```groovy
+  // 添加MapStruct描述
+  implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
+  implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+  annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+  testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+  ```
+  
+  使用 `1.5.5.Final` 版本。
+  
+  工程中实际上如下（主要用于测试时的映射）：
+  
+  ```groovy
+  implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
+  testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+  ```
+  
+- 追加 `MapStruct Support` 的 `Plugin`
+
 ## 2. 创建办法
 
 ### 2.1 创建映射类

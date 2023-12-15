@@ -1,5 +1,10 @@
 # MapStruct的使用方法
 
+随着微服务和分布式应用程序迅速占领开发领域，数据完整性和安全性比以往任何时候都更加重要。在这些松散耦合的系统之间，安全的通信渠道和有限的数据传输是最重要的。大多数时候，终端用户或服务不需要访问模型中的全部数据，而只需要访问某些特定的部分。  
+数据传输对象(Data Transfer Objects, DTO)经常被用于这些应用中。DTO只是持有另一个对象中被请求的信息的对象。通常情况下，这些信息是有限的一部分。例如，在持久化层定义的实体和发往客户端的DTO之间经常会出现相互之间的转换。由于DTO是原始对象的反映，因此这些类之间的映射器在转换过程中扮演着关键角色。
+
+MapStruct是一个开源的基于Java的代码生成器，用于创建实现Java Bean之间转换的扩展映射器。使用MapStruct，我们只需要创建接口，而该库会通过注解在编译过程中自动创建具体的映射实现，大大减少了通常需要手工编写的样板代码的数量。
+
 ## 1. 环境设置
 
 - `build.gradle`
@@ -8,6 +13,7 @@
   // 添加MapStruct描述
   implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+  // 添加annotationProcessorPaths，该插件会在构建时生成对应的代码
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
   testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
   ```

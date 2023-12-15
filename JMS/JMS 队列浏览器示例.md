@@ -10,19 +10,19 @@
 
 ```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.javacodegeeks.jms</groupId>
-    <artifactId>springJmsQueue</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.12.0</version>
-        </dependency>
-    </dependencies>
-     
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.javacodegeeks.jms</groupId>
+	<artifactId>springJmsQueue</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.12.0</version>
+		</dependency>
+	</dependencies>
+	
 </project>
 ```
 
@@ -34,25 +34,25 @@ JMS 是一个规范，而不是一个实际的产品。JMS提供程序（如Acti
 
 ```java
 package com.javacodegeeks.jms;
- 
+
 import java.net.URI;
 import java.net.URISyntaxException;
- 
+
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
- 
+
 public class BrokerLauncher {
-    public static void main(String[] args) throws URISyntaxException, Exception {
-        BrokerService broker = BrokerFactory.createBroker(new URI(
-                "broker:(tcp://localhost:61616)"));
-        broker.start();     
-    }
+	public static void main(String[] args) throws URISyntaxException, Exception {
+		BrokerService broker = BrokerFactory.createBroker(new URI(
+			"broker:(tcp://localhost:61616)"));
+		broker.start();
+	}
 }
 ```
 
 输出：
 
-```
+```bash
 INFO | JMX consoles can connect to service:jmx:rmi:///jndi/rmi://localhost:1099/jmxrmi
 INFO | PListStore:[C:\javacodegeeks_ws\jmsQueueBrowserExample\activemq-data\localhost\tmp_storage] started
 INFO | Using Persistence Adapter: KahaDBPersistenceAdapter[C:\javacodegeeks_ws\jmsQueueBrowserExample\activemq-data\localhost\KahaDB]
@@ -75,12 +75,12 @@ A 是使用对象中的方法创建的。它需要需要浏览的对象。如果
 
 ```java
 public interface Session extends Runnable {
-...
-    QueueBrowser createBrowser(Queue queue) throws JMSException;
- 
-    QueueBrowser createBrowser(Queue queue, String messageSelector)
-        throws JMSException;
-...
+	...
+	QueueBrowser createBrowser(Queue queue) throws JMSException;
+	
+	QueueBrowser createBrowser(Queue queue, String messageSelector)
+		throws JMSException;
+	...
 }
 ```
 
@@ -94,10 +94,10 @@ QueueBrowser browser = session.createBrowser(queue);
 
 ```java
 public interface QueueBrowser {
-    Queue getQueue() throws JMSException;
-    String getMessageSelector() throws JMSException;
-    Enumeration getEnumeration() throws JMSException;
-    void close() throws JMSException;
+	Queue getQueue() throws JMSException;
+	String getMessageSelector() throws JMSException;
+	Enumeration getEnumeration() throws JMSException;
+	void close() throws JMSException;
 }
 ```
 
@@ -116,10 +116,10 @@ public interface QueueBrowser {
 
 ```java
 package com.javacodegeeks.jms;
- 
+
 import java.net.URISyntaxException;
 import java.util.Enumeration;
- 
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Message;
@@ -129,61 +129,61 @@ import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 import javax.jms.Session;
 import javax.jms.TextMessage;
- 
+
 import org.apache.activemq.ActiveMQConnectionFactory;
- 
+
 public class JmsQueueBrowseExample {
-    public static void main(String[] args) throws URISyntaxException, Exception {
-        Connection connection = null;
-        try {
-            // Producer
-            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                    "tcp://localhost:61616");
-            connection = connectionFactory.createConnection();
-            Session session = connection.createSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
-            Queue queue = session.createQueue("browseQueue");
-            MessageProducer producer = session.createProducer(queue);
-            String task = "Task";
-            for (int i = 0; i < 10; i++) {
-                String payload = task + i;
-                Message msg = session.createTextMessage(payload);
-                System.out.println("Sending text '" + payload + "'");
-                producer.send(msg);
-            }
+	public static void main(String[] args) throws URISyntaxException, Exception {
+		Connection connection = null;
+		try {
+			// Producer
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+					"tcp://localhost:61616");
+			connection = connectionFactory.createConnection();
+			Session session = connection.createSession(false,
+					Session.AUTO_ACKNOWLEDGE);
+			Queue queue = session.createQueue("browseQueue");
+			MessageProducer producer = session.createProducer(queue);
+			String task = "Task";
+			for (int i = 0; i < 10; i++) {
+				String payload = task + i;
+				Message msg = session.createTextMessage(payload);
+				System.out.println("Sending text '" + payload + "'");
+				producer.send(msg);
+			}
+
+			MessageConsumer consumer = session.createConsumer(queue);
+			connection.start();
+
+			System.out.println("Browse through the elements in queue");
+			QueueBrowser browser = session.createBrowser(queue);
+			Enumeration e = browser.getEnumeration();
+			while (e.hasMoreElements()) {
+				TextMessage message = (TextMessage) e.nextElement();
+				System.out.println("Browse [" + message.getText() + "]");
+			}
+			System.out.println("Done");
+			browser.close();
  
-            MessageConsumer consumer = session.createConsumer(queue);
-            connection.start();
- 
-            System.out.println("Browse through the elements in queue");
-            QueueBrowser browser = session.createBrowser(queue);
-            Enumeration e = browser.getEnumeration();
-            while (e.hasMoreElements()) {
-                TextMessage message = (TextMessage) e.nextElement();
-                System.out.println("Browse [" + message.getText() + "]");
-            }
-            System.out.println("Done");
-            browser.close();
- 
-            for (int i = 0; i < 10; i++) {
-                TextMessage textMsg = (TextMessage) consumer.receive();
-                System.out.println(textMsg);
-                System.out.println("Received: " + textMsg.getText());
-            }
-            session.close();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
- 
+			for (int i = 0; i < 10; i++) {
+				TextMessage textMsg = (TextMessage) consumer.receive();
+				System.out.println(textMsg);
+				System.out.println("Received: " + textMsg.getText());
+			}
+			session.close();
+		} finally {
+			if (connection != null) {
+				connection.close();
+			}
+		}
+	}
+
 }
 ```
 
 结果输出：
 
-```
+```bash
 Sending text 'Task0'
 Sending text 'Task1'
 Sending text 'Task2'
@@ -238,14 +238,14 @@ Received: Task9
 
 ```java
 for (int i = 0; i < 10; i++) {
-                String payload = task + i;
-                Message msg = session.createTextMessage(payload);
-                System.out.println("Sending text '" + payload + "'");
-                if (i % 2 == 0) {
-                    msg.setStringProperty("sequence", "even");
-                }
-                producer.send(msg);
-            }
+	String payload = task + i;
+	Message msg = session.createTextMessage(payload);
+	System.out.println("Sending text '" + payload + "'");
+	if (i % 2 == 0) {
+		msg.setStringProperty("sequence", "even");
+	}
+	producer.send(msg);
+}
 ```
 
 假设我们只想浏览偶数排序的消息，那么消息选择器将是 .`"sequence = 'even'"`

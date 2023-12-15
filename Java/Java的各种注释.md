@@ -31,11 +31,11 @@
       - [(c) 声明多个 @Bean 方法](#c-声明多个-bean-方法)
   - [@SuppressWarnings（"unchecked"）](#suppresswarningsunchecked)
     - [1. 简介：](#1-简介)
-    - [2. 示例　　　　　　　　　　　　　　　　　　　　　　　　　](#2-示例)
-    - [3. 注解目标　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　](#3-注解目标)
+    - [2. 示例](#2-示例)
+    - [3. 注解目标](#3-注解目标)
     - [4. 抑制警告的关键字](#4-抑制警告的关键字)
-    - [5. Java Lint选项　　　　　　　　　　　　　　　　　　　　　　　　　　　　](#5-java-lint选项)
-    - [6. 总结　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　](#6-总结)
+    - [5. Java Lint选项](#5-java-lint选项)
+    - [6. 总结](#6-总结)
   - [@PostConstruct](#postconstruct)
     - [1. 注解解释](#1-注解解释)
     - [2. 示例代码](#2-示例代码)
@@ -586,7 +586,7 @@ java.lang.SuppressWarnings是J2SE5.0中标准的Annotation之一。可以标注�
   ![http://images.cnitblog.com/blog/347002/201410/211544285432472.png](http://images.cnitblog.com/blog/347002/201410/211544285432472.png)
   上述代码编译通过且可以运行，但每行前面的“感叹号”就严重阻碍了我们判断该行是否设置的断点了。这时我们可以在方法前添加 @SuppressWarnings("unused") 去除这些“感叹号”。
 
-### 2. 示例　　　　　　　　　　　　　　　　　　　　　　　　　
+### 2. 示例
 
 作用：用于抑制编译器产生警告信息。
 
@@ -623,7 +623,7 @@ java.lang.SuppressWarnings是J2SE5.0中标准的Annotation之一。可以标注�
 
   
 
-### 3. 注解目标　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+### 3. 注解目标
 
 通过 @SuppressWarnings 的源码可知，其注解目标为类、字段、函数、函数入参、构造函数和函数的局部变量。
 
@@ -655,7 +655,7 @@ java.lang.SuppressWarnings是J2SE5.0中标准的Annotation之一。可以标注�
   | unqualified-field-access | to suppress warnings relative to field access unqualified（为了抑制与现场访问相关的警告） |
   | unused                   | to suppress warnings relative to unused code（抑制没有使用过代码的警告） |
 
-### 5. Java Lint选项　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+### 5. Java Lint选项
 
 1. lint的含义
 
@@ -672,7 +672,7 @@ java.lang.SuppressWarnings是J2SE5.0中标准的Annotation之一。可以标注�
 
      默认情况下执行 javac 仅仅显示警告的扼要信息，也不过阻止编译过程。若想查看警告的详细信息，则需要执行 javac -Xlint:keyword 来编译源码了。
 
-### 6. 总结　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+### 6. 总结
 
   现在再都不怕不知道设置断点没有咯！
 

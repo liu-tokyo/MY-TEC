@@ -1,5 +1,51 @@
 # Java的各种注释
 
+## 目录
+
+- [Java的各种注释](#java的各种注释)
+  - [目录](#目录)
+  - [@Primary](#primary)
+    - [1.概述](#1概述)
+    - [2.为什么需要@Primary？](#2为什么需要primary)
+    - [3.将`@Primary`和`@Bean`一起使用](#3将primary和bean一起使用)
+    - [4.将`@Primary`与`@Component`一起使用](#4将primary与component一起使用)
+  - [@Autowired](#autowired)
+    - [1. 静态注入](#1-静态注入)
+    - [2. 动态注入](#2-动态注入)
+  - [@component](#component)
+    - [1. 介绍](#1-介绍)
+    - [2. 说明](#2-说明)
+    - [3. 用法](#3-用法)
+  - [@Configuration](#configuration)
+    - [1. 基本用法](#1-基本用法)
+      - [(a) 基本介绍](#a-基本介绍)
+      - [(b) 简单样例](#b-简单样例)
+    - [2. @Bean 注解详解](#2-bean-注解详解)
+      - [(a) 使用说明](#a-使用说明)
+      - [(b) Bean 名称](#b-bean-名称)
+      - [(c) @Bean 与其他注解一起使用](#c-bean-与其他注解一起使用)
+      - [(d) Bean 初始化和销毁时调用相应的方法](#d-bean-初始化和销毁时调用相应的方法)
+    - [3. @Configration 注解详解](#3-configration-注解详解)
+      - [(a) 使用说明](#a-使用说明-1)
+      - [(b) 声明一个 @Bean 方法](#b-声明一个-bean-方法)
+      - [(c) 声明多个 @Bean 方法](#c-声明多个-bean-方法)
+  - [@SuppressWarnings（"unchecked"）](#suppresswarningsunchecked)
+    - [1. 简介：](#1-简介)
+    - [2. 示例　　　　　　　　　　　　　　　　　　　　　　　　　](#2-示例)
+    - [3. 注解目标　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　](#3-注解目标)
+    - [4. 抑制警告的关键字](#4-抑制警告的关键字)
+    - [5. Java Lint选项　　　　　　　　　　　　　　　　　　　　　　　　　　　　](#5-java-lint选项)
+    - [6. 总结　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　](#6-总结)
+  - [@PostConstruct](#postconstruct)
+    - [1. 注解解释](#1-注解解释)
+    - [2. 示例代码](#2-示例代码)
+    - [3. 补充说明](#3-补充说明)
+  - [lombok的@Builder](#lombok的builder)
+    - [1. 简介](#1-简介-1)
+    - [2. 使用 lombok 改造](#2-使用-lombok-改造)
+    - [3. 遇到问题](#3-遇到问题)
+
+
 ##  @Primary
 
 > https://www.cnblogs.com/fnlingnzb-learner/p/16803858.html

@@ -838,7 +838,7 @@ Spring的@PostConstruct注解在方法上，表示此方法是在Spring实例化
 
    被@PreDestroy修饰的方法会在服务器卸载Servlet(bean)的时候运行，并且只会被服务器调用一次，类似于Servlet的destroy()方法。被@PreDestroy修饰的方法会在destroy()方法之后运行，在Servlet被彻底卸载之前
 
-   ![image-20221113194656898](images/image-20221113194656898.png)
+   ![image-20221113194656898](images/image-20221113194656898.svg)
    
 
 另外，spring中`Constructor`、`@Autowired`、`@PostConstruct`的顺序

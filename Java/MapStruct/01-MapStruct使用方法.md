@@ -130,6 +130,27 @@ MapStruct是一个开源的基于Java的代码生成器，用于创建实现Java
 
   http://mapstruct.org/documentation/stable/reference/html/#retrieving-mapper
 
+### 2.4 常见注释
+
+- 注释一览
+
+  | 注解                    | 描述                                        |
+  | ----------------------- | ------------------------------------------- |
+  | @Mapper                 | 指示此接口将用于生成映射实现                |
+  | @Mapping                | 将源和目标属性之间的映射指定为参数          |
+  | @Mappings               | 允许使用多个 @Mapping 注释指定映射          |
+  | @InheritConfiguration   | 继承父映射配置                              |
+  | @BeanMapping            | 自定义要应用于映射器方法的 Bean 映射选项    |
+  | @BeforeMapping          | 在映射开始时执行方法                        |
+  | @AfterMapping           | 在映射结束时执行方法                        |
+  | @IterableMapping        | 将迭代器类型映射指定为参数                  |
+  | @ValueMapping           | 为枚举类型或其他可枚举类型提供自定义值映射  |
+  | @Named                  | 为参数提供一个自定义名称                    |
+  | @Context                | 将用户提供的上下文参数注入 Mapper 方法      |
+  | @AfterMappingConversion | 在映射后进行类型转换                        |
+  | @Qualifier              | 为不同的 Mapper 或 Mapping 提供自定义限定符 |
+  | @MapperDependency       | 指定该 Mapper 接口依赖于另一个 Mapper 接口  |
+
 ## 3. 自定义映射
 
 MapStruct 提供了多种自定义映射过程的方法。
@@ -728,6 +749,19 @@ MapStruct 提供了多种自定义映射过程的方法。
   > userDo = UserDO(id=8888, userName=gongjie, birthday=Mon May 10 22:41:43 CST 2021, time=2021-05-09, email=99@163.com, card=null)
   > 	
   > userDTO = UserDTO(id=null, userName=gongjie, userBirthday=2021-05-10 22:41:43, userTime=Sun May 09 00:00:00 CST 2021, userEmail=99@163.com====expression====, cardName=null)
+
+### 3.20 深度映射
+
+- 例子代码
+
+  ```
+  @Mapper(mappingControl = DeepClone.class)
+  public interface CloningMapper {
+  
+  }
+  ```
+
+  参照官方网页：https://mapstruct.org/documentation/dev/api/org/mapstruct/control/MappingControl.html
 
 ## 4. 映射重用
 

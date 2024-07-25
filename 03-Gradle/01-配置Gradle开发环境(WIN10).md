@@ -120,3 +120,8 @@
   3. `allprojects` 的 `repositories` 用于多项目构建，为所有项目提供共同所需依赖包。
 
      而子项目可以配置自己的 `repositories` 以获取自己独自需要的依赖包。
+
+## 5. SpringBoot 项目
+
+- 开始URL  
+  https://start.spring.io/
